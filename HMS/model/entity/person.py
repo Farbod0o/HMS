@@ -86,7 +86,7 @@ class Person(Base):
         return self._birth_date
 
     @birth_date.setter
-    @date_validator("Invalid Birth Date")
+    @date_validator("Invalid date of birth")
     def birth_date(self, birth_date):
         self._birth_date = birth_date
 

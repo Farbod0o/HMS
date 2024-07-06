@@ -1,29 +1,33 @@
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 from HMS.model.da.data_access import Base
-from HMS.model.tools.validator import Validator, date_validator, date_time_validator
+from HMS.model.tools.validator import Validator, date_validator, date_time_validator, pattern_validator, time_validator
 
 
 class Shift(Base):
     __tablename__ = "shifts_tbl"
     _id = Column("id", Integer, primary_key=True, autoincrement=True)
-    _day = Column("shift_date", DateTime, nullable=False)
-    _start_time = Column("start_time", DateTime, nullable=False)
-    _end_time = Column("end_time", DateTime, nullable=False)
+    _day = Column("shift_date", DateTime)
+    _start_time = Column("start_time", DateTime)
+    _end_time = Column("end_time", DateTime)
+    _note = Column("note", String(255))
+    _status = Column("status", Boolean, default=True)
 
-    _doctor_id = Column(Integer, ForeignKey("doctor_tbl.id"), nullable=False)
-    _doctor = relationship("Doctor")
+    _medical_service = Column(Integer, ForeignKey("medical_services_tbl.id"))
+    medical = relationship("MedicalService")
 
-    _medical_service = Column(Integer, ForeignKey("medical_services_tbl.id"), nullable=False)
-    _medical = relationship("MedicalService")
+    _doctor_id = Column(Integer, ForeignKey("doctors_tbl.id"))
+    doctor = relationship("Doctor")
 
-    def __init__(self, day, start_time, end_time, doctor, medical_service):
+    def __init__(self, day, start_time, end_time, doctor, medical_service,note="None",status=True):
         self.id = None
         self.day = day
         self.start_time = start_time
         self.end_time = end_time
-        self.medical_service = medical_service
-        self.doctor = doctor
+        self.medical_service = medical_service.id
+        self.doctor_id = doctor.id
+        self.note = note
+        self.status = status
 
     @property
     def id(self):
@@ -38,7 +42,7 @@ class Shift(Base):
         return self._day
 
     @day.setter
-    @date_validator
+    @date_validator("Invalid Date")
     def day(self, day):
         self._day = day
 
@@ -47,7 +51,7 @@ class Shift(Base):
         return self._start_time
 
     @start_time.setter
-    @date_time_validator
+    @time_validator("Invalid Start time")
     def start_time(self, start_time):
         self._start_time = start_time
 
@@ -56,6 +60,39 @@ class Shift(Base):
         return self._end_time
 
     @end_time.setter
-    @date_time_validator
+    @time_validator("Invalid End time")
     def end_time(self, end_time):
         self._end_time = end_time
+
+    @property
+    def medical_service(self):
+        return self._medical_service
+
+    @medical_service.setter
+    def medical_service(self, medical_service):
+        self._medical_service = medical_service
+
+    @property
+    def doctor_id(self):
+        return self._doctor_id
+
+    @doctor_id.setter
+    def doctor_id(self, doctor_id):
+        self._doctor_id = doctor_id
+
+    @property
+    def status(self):
+        return self._status
+
+    @status.setter
+    def status(self, status):
+        self._status = Validator.positive_int_validator(status, "Invalid Status")
+
+    @property
+    def note(self):
+        return self._note
+
+    @note.setter
+    @pattern_validator(r'^.{1,100}$',"Invalid Note")
+    def note(self, note):
+        self._note = note

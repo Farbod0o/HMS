@@ -1,7 +1,9 @@
 from HMS.model.entity.department import Department
 from HMS.model.entity.doctor import Doctor
+from HMS.model.entity.med_service import MedicalService
 from HMS.model.entity.patient import Patient
 from HMS.model.entity.person import Person
+from HMS.model.entity.shift import Shift
 from HMS.model.service.service import Service
 from HMS.model.tools.decorators import exception_handling
 
@@ -48,6 +50,18 @@ class Controller:
         status, person = cls.add_person(name, family, user, password, password2, birth, role, phone, email, address)
         patient = Patient(person, gender, blood)
         return True, Service.save(patient,Patient)
+
+    @classmethod
+    @exception_handling
+    def add_service(cls,service_name,note):
+        med_service = MedicalService(service_name,note)
+        return True, Service.save(med_service,MedicalService)
+
+    @classmethod
+    @exception_handling
+    def add_shift(cls,day,start,end,doc,service):
+        shift = Shift(day,start,end,doc,service)
+        return True, Service.save(shift,Shift)
 
     @classmethod
     @exception_handling

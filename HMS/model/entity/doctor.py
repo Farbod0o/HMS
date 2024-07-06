@@ -1,7 +1,6 @@
-from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 from HMS.model.da.data_access import Base
-from HMS.model.entity.person import Person
 from HMS.model.tools.validator import Validator, pattern_validator
 
 
@@ -76,5 +75,3 @@ class Doctor(Base):
     @department.setter
     def department(self, department):
         self._department = department
-
-

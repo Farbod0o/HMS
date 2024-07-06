@@ -19,7 +19,6 @@ class Appointment(Base):
     _shift_id = Column(Integer, ForeignKey("shifts_tbl.id"), nullable=False)
     _shift = relationship("Shift")
 
-
     def __init__(self, shift, patient, start_time, end_time, cost=0, payment_status="pending"):
         self.id = None
         self._shift_id = shift
@@ -78,4 +77,3 @@ class Appointment(Base):
     @payment_status.setter
     def payment_status(self, payment_status):
         self._payment_status = payment_status
-

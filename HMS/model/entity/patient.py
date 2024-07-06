@@ -61,7 +61,7 @@ class Patient(Base):
         return self._current_conditions
 
     @current_conditions.setter
-    @pattern_validator(r'^.{1,100}$',"Invalid Current condition")
+    @pattern_validator(r'^.{1,100}$',"Invalid condition")
     def current_conditions(self, current_conditions):
         self._current_conditions = current_conditions
 

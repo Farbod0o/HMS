@@ -8,7 +8,7 @@ from HMS.model.tools.validator import Validator, pattern_validator
 class MedicalService(Base):
     __tablename__ = "medical_services_tbl"
     _id = Column("id", Integer, primary_key=True, autoincrement=True)
-    _medical_service = Column("medical_service", nullable=False)
+    _medical_service = Column("medical_service", String(20))
     _note = Column("note", String(255))
     _status = Column("status", Boolean, default=True)
 

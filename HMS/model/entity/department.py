@@ -9,7 +9,7 @@ class Department(Base):
     _id = Column("id", Integer, primary_key=True, autoincrement=True)
     _name = Column("name", String(20), nullable=False)
     _head_id = Column(Integer, ForeignKey("doctors_tbl.id"), nullable=False)
-    _person = relationship("Doctor")
+    doctor = relationship("Doctor")
 
     def __init__(self, name, head):
         self.id = None
