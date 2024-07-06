@@ -1,0 +1,60 @@
+from HMS.model.entity.department import Department
+from HMS.model.entity.doctor import Doctor
+from HMS.model.entity.patient import Patient
+from HMS.model.entity.person import Person
+from HMS.model.service.service import Service
+from HMS.model.tools.decorators import exception_handling
+
+
+class Controller:
+
+    @classmethod
+    @exception_handling
+    def login_check(cls, username, password):
+        p1 = Service.find_by_username(Person, username)
+        try:
+            p1 = p1[0]
+        except IndexError:
+            return False, f"Username {username} not found"
+        return True, p1
+
+    @classmethod
+    @exception_handling
+    def add_person(cls, name, family, user, password, password2, birth, role, phone, email, address, ):
+        if password != password2:
+            print("Passwords do not match")
+            return False, "Passwords do not match"
+        person = Person(name, family, user, password, birth, role, phone, email, address, )
+        return True, Service.save(person,Person)
+
+    @classmethod
+    @exception_handling
+    def add_department(cls, name, head_id):
+        head = cls.find_by_id(Doctor, head_id)
+        department = Department(name, head)
+        return True, Service.save(department,Department)
+
+    @classmethod
+    @exception_handling
+    def add_doctor(cls, name, family, user, password, pas2, birth, role, phone, email, address, specialty, department,
+                   sub,exp):
+        status, person = cls.add_person(name, family, user, password, pas2, birth, role, phone, email, address)
+        dr = Doctor(person, specialty, department, sub, exp)
+        return True, Service.save(dr,Doctor)
+
+    @classmethod
+    @exception_handling
+    def add_patient(cls, name, family, user, password, password2, birth, role, phone, email, address, gender, blood):
+        status, person = cls.add_person(name, family, user, password, password2, birth, role, phone, email, address)
+        patient = Patient(person, gender, blood)
+        return True, Service.save(patient,Patient)
+
+    @classmethod
+    @exception_handling
+    def find_all(cls, entity):
+        return True, Service.find_all(entity)
+
+    @classmethod
+    @exception_handling
+    def find_by_id(cls, entity, user_id):
+        return Service.find_by_id(entity,user_id)
