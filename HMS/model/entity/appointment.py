@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 from HMS.model.da.data_access import Base
-from HMS.model.tools.validator import Validator, date_validator, date_time_validator
+from HMS.model.tools.validator import Validator, date_validator, date_time_validator, time_validator
 
 
 class Appointment(Base):
@@ -11,20 +11,20 @@ class Appointment(Base):
     _end_time = Column("end_time", DateTime, nullable=False)
     _status = Column("status", Boolean, default=True)
     _cost = Column("cost", Integer, nullable=False)
-    _payment_status = Column("payment_status", Boolean, default=True)
+    _payment_status = Column("payment_status", String(30), default=True)
 
-    _patient_id = Column(Integer, ForeignKey("patient_tbl.id"), nullable=False)
-    _patient = relationship("Patient")
+    _patient_id = Column(Integer, ForeignKey("patients_tbl.id"))
+    medical = relationship("Patient")
 
-    _shift_id = Column(Integer, ForeignKey("shifts_tbl.id"), nullable=False)
-    _shift = relationship("Shift")
+    shift_id = Column(Integer, ForeignKey("shifts_tbl.id"))
+    shift = relationship("Shift")
 
     def __init__(self, shift, patient, start_time, end_time, cost=0, payment_status="pending"):
         self.id = None
-        self._shift_id = shift
+        self.shift_id = shift.id
         self.start_time = start_time
         self.end_time = end_time
-        self._patient_id = patient
+        self.patient_id = patient.id
         self.cost = cost
         self.payment_status = payment_status
 
@@ -41,7 +41,7 @@ class Appointment(Base):
         return self._start_time
 
     @start_time.setter
-    @date_time_validator
+    @time_validator("Invalid start time")
     def start_time(self, start_time):
         self._start_time = start_time
 
@@ -50,7 +50,7 @@ class Appointment(Base):
         return self._end_time
 
     @end_time.setter
-    @date_time_validator
+    @time_validator("Invalid end time")
     def end_time(self, end_time):
         self._end_time = end_time
 
@@ -77,3 +77,11 @@ class Appointment(Base):
     @payment_status.setter
     def payment_status(self, payment_status):
         self._payment_status = payment_status
+
+    @property
+    def patient_id(self):
+        return self._patient_id
+
+    @patient_id.setter
+    def patient_id(self, patient_id):
+        self._patient_id = patient_id

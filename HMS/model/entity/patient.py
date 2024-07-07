@@ -10,9 +10,11 @@ class Patient(Base):
     _gender = Column("gender", String(20), nullable=False)
     _current_conditions = Column("current_conditions", String(20), nullable=False)
     _blood_type = Column("blood_type", String(30))
-    _person_id = Column(Integer, ForeignKey("person_tbl.id"), nullable=False)
 
+    _person_id = Column(Integer, ForeignKey("person_tbl.id"), nullable=False)
     _person = relationship("Person")
+
+    # appointments = relationship("Appointment", back_populates="patient")
 
     def __init__(self, person, gender, blood_type, current_conditions="None"):
         self.id = None

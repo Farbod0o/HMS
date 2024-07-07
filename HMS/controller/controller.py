@@ -1,9 +1,11 @@
+from HMS.model.entity.appointment import Appointment
 from HMS.model.entity.department import Department
 from HMS.model.entity.doctor import Doctor
 from HMS.model.entity.med_service import MedicalService
 from HMS.model.entity.patient import Patient
 from HMS.model.entity.person import Person
 from HMS.model.entity.shift import Shift
+from HMS.model.service.appointment_sercvice import AppointmentService
 from HMS.model.service.service import Service
 from HMS.model.tools.decorators import exception_handling
 
@@ -72,3 +74,9 @@ class Controller:
     @exception_handling
     def find_by_id(cls, entity, user_id):
         return Service.find_by_id(entity,user_id)
+
+    @classmethod
+    @exception_handling
+    def add_appointment(cls,shift, patient, start_time, end_time):
+        appointment = Appointment(shift, patient, start_time, end_time)
+        return True, AppointmentService.save(appointment,Appointment)
