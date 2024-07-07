@@ -24,6 +24,12 @@ class Service:
         entity_da = DataAccess(entity)
         return entity_da.find_by(entity._username == username)
 
+    def find_by_username(entity,username):
+        entity_da = DataAccess(entity)
+        return entity_da.find_by(entity._username == username)
+
+
+
 
     # @staticmethod
     # def edit(ticket):

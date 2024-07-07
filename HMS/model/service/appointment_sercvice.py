@@ -1,58 +1,42 @@
 from HMS.model.da.data_access import DataAccess
-from HMS.model.tools.decorators import exception_handling
+from HMS.model.entity.appointment import Appointment
+from HMS.model.service.service import Service
 
 
-class AppointmentService:
-    @staticmethod
-    def save(obj,entity):
-        entity_da = DataAccess(entity)
-        entity_da.save(obj)
-        return obj
+class AppointmentService(Service):
+    @classmethod
+    def save(cls, shift, appointment):
+        shift_id = shift.id
+        appointments_list = cls.find_by_shift_id(shift_id)
+        print("==", appointments_list)
+        new_start = appointment.start_time
+        new_end = appointment.end_time
+        if cls.is_within_interval(new_start, new_end, shift.start_time, shift.end_time):
+            if not cls.is_overlapping(new_start, new_end, appointments_list) :
+                entity_da = DataAccess(Appointment)
+                entity_da.save(appointment)
+                return appointment
+            else:
+                raise Exception("This time interval is overlapping appointment")
+        else:
+            raise ValueError("Appointment is outside interval")
 
-    @staticmethod
-    def find_all(entity):
-        entity_da = DataAccess(entity)
-        return entity_da.find_all()
+    @classmethod
+    def is_within_interval(cls, start, end, interval_start, interval_end):
+        return start >= interval_start and end <= interval_end
 
-    @staticmethod
-    def find_by_id(entity,id):
-        entity_da = DataAccess(entity)
-        return entity_da.find_by_id(id)
+    @classmethod
+    def is_overlapping(cls, new_start, new_end, appointments_list):
+        for appointment in appointments_list:
+            app_end = appointment.end_time
+            app_start = appointment.start_time
+            if not (new_end <= app_start or new_start >= app_end):
+                return True
+        print("last:",app_start, app_end)
+        print("new:",new_start, new_end)
+        return False
 
-    @staticmethod
-    def find_by_username(entity,username):
-        entity_da = DataAccess(entity)
-        return entity_da.find_by(entity._username == username)
-
-
-    # @staticmethod
-    # def edit(ticket):
-    #     ticket_da = DataAccess(Ticket)
-    #     if ticket_da.find_by_id(ticket.id):
-    #         ticket_da.edit(ticket)
-    #         return ticket
-    #     else:
-    #         raise TicketNotFoundError()
-
-    # @staticmethod
-    # def remove(id):
-    #     ticket_da = DataAccess(Ticket)
-    #     if ticket_da.find_by_id(id):
-    #         return ticket_da.remove(id)
-    #     else:
-    #         raise TicketNotFoundError()
-
-    # @staticmethod
-    # def find_by_title(title):
-    #     ticket_da = DataAccess(Ticket)
-    #     return ticket_da.find_by(Ticket._title == title)
-    #
-    # @staticmethod
-    # def find_by_text_content(text_content):
-    #     ticket_da = DataAccess(Ticket)
-    #     return ticket_da.check_word_in_text(text_content)
-    #
-    # @staticmethod
-    # def date_range(start_date, end_date):
-    #     ticket_da = DataAccess(Ticket)
-    #     return ticket_da.find_by_date_range(start_date, end_date)
+    @classmethod
+    def find_by_shift_id(cls, shift_id):
+        entity_da = DataAccess(Appointment)
+        return entity_da.find_by(Appointment.shift_id == shift_id)

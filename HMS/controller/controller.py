@@ -77,6 +77,12 @@ class Controller:
 
     @classmethod
     @exception_handling
+    def find_by(cls, entity, user_id):
+        return Service.find_by_id(entity,user_id)
+
+
+    @classmethod
+    @exception_handling
     def add_appointment(cls,shift, patient, start_time, end_time):
         appointment = Appointment(shift, patient, start_time, end_time)
-        return True, AppointmentService.save(appointment,Appointment)
+        return True, AppointmentService.save(shift,appointment)
