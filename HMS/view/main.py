@@ -6,9 +6,9 @@ from HMS.model.entity.patient import Patient
 from HMS.controller.controller import Controller
 from HMS.view.component.label_text import TextWithLabel
 import HMS.view.patient.register as patient_registration
-import HMS.view.registrations.doctor as doctor_registration
-import HMS.view.registrations.department as department_registration
-import HMS.view.info_pages.doctors_list as doctors_list
+import HMS.view.doctor.register as doctor_registration
+import HMS.view.department.register as department_registration
+import HMS.view.doctor.info_table as doctors_list
 import HMS.view.patient.info_table as patients_list
 
 
