@@ -8,11 +8,10 @@ class AppointmentService(Service):
     def save(cls, shift, appointment):
         shift_id = shift.id
         appointments_list = cls.find_by_shift_id(shift_id)
-        print("==", appointments_list)
         new_start = appointment.start_time
         new_end = appointment.end_time
         if cls.is_within_interval(new_start, new_end, shift.start_time, shift.end_time):
-            if not cls.is_overlapping(new_start, new_end, appointments_list) :
+            if not cls.is_overlapping(new_start, new_end, appointments_list):
                 entity_da = DataAccess(Appointment)
                 entity_da.save(appointment)
                 return appointment
@@ -32,8 +31,6 @@ class AppointmentService(Service):
             app_start = appointment.start_time
             if not (new_end <= app_start or new_start >= app_end):
                 return True
-        print("last:",app_start, app_end)
-        print("new:",new_start, new_end)
         return False
 
     @classmethod

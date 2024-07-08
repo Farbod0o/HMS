@@ -1,3 +1,3 @@
 from HMS.view.main import Main
 
-ui = Main()
+show = Main()

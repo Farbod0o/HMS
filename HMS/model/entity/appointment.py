@@ -13,7 +13,7 @@ class Appointment(Base):
     _cost = Column("cost", Integer, nullable=False)
     _payment_status = Column("payment_status", String(30), default=True)
 
-    patient_id = Column(Integer, ForeignKey("patients_tbl.id"))
+    _patient_id = Column(Integer, ForeignKey("patients_tbl.id"))
     patient = relationship("Patient")
 
     shift_id = Column(Integer, ForeignKey("shifts_tbl.id"))

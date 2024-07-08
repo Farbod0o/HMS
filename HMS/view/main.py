@@ -5,11 +5,11 @@ from HMS.model.entity.doctor import Doctor
 from HMS.model.entity.patient import Patient
 from HMS.controller.controller import Controller
 from HMS.view.component.label_text import TextWithLabel
-import HMS.view.registrations.patient as patient_registration
+import HMS.view.patient.register as patient_registration
 import HMS.view.registrations.doctor as doctor_registration
 import HMS.view.registrations.department as department_registration
 import HMS.view.info_pages.doctors_list as doctors_list
-import HMS.view.info_pages.patients_list as patients_list
+import HMS.view.patient.info_table as patients_list
 
 
 class Main:
@@ -83,11 +83,12 @@ class Main:
         switch = tk.CTkSwitch(self.win, text="حالت تیره🌓", command=self.switch_event, bg_color="#57A0AA",
                               font=font_tuple, variable=self.switch_var, onvalue="on", offvalue="off")
         switch.place(x=35, y=51)
-        tk.CTkLabel(self.win, text="", bg_color="#573660", font=font_tuple, width=250, height=h).place(x=w - 250, y=75)
+        tk.CTkLabel(self.win, text="", bg_color="#C6CDDF", font=font_tuple, width=250, height=h).place(x=w - 250, y=75)
         self.right_panel()
 
     def on_button_click(self, button):
-        list_ = ["پنل اصلی💢", "بیماران🦽", "پزشکان🩺", "🛌اتاق ها", "شیفت ها⏳", "نوبت دهی 📆", "دپارتمان ها🏢", "پرداخت ها💲"]
+        list_ = ["پنل اصلی💢", "بیماران🦽", "پزشکان🩺", "🛌اتاق ها", "شیفت ها⏳",
+                 "نوبت دهی 📆", "خدمات🧾", "دپارتمان ها🏢", "پرداخت ها💲"]
         w, h = self.win.winfo_screenwidth(), self.win.winfo_screenheight()
         for but in self.right_buttons_list:
             but.destroy()
@@ -104,22 +105,24 @@ class Main:
                 new_ = ["اضافه کردن پزشک➕", "لیست پزشکان🗂", "ویرایش دکتر✏️", "جزئیات دکتر🔍"]
             case "دپارتمان ها🏢":
                 new_ = ["اضافه کردن دپارتمان➕", "لیست دپارتمان ها🗂", "ویرایش دپارتمان✏️", "جزئیات دپارتمان🔍"]
+            case "خدمات🧾":
+                new_ = ["اضافه کردن سرویس➕", "لیست سرویس ها🗂", "ویرایش سرویس✏️"]
             case _:
                 new_ = []
 
         font_tuple = ("Sahel", 15,)
         y = 85
         for i in list_:
-            rm1 = tk.CTkButton(self.win, text=i, width=220, font=font_tuple, fg_color="#927A93",
-                               hover_color="#D789DC", bg_color="#573660", hover=True,
+            rm1 = tk.CTkButton(self.win, text=i, width=220, font=font_tuple, fg_color="#248DB6",
+                               hover_color="#0F6BAE", bg_color="#C6CDDF", hover=True,
                                command=partial(self.on_button_click, i))
             rm1.place(x=w - 236, y=y)
             self.right_buttons_list.append(rm1)
             if i == button:
                 for new in new_:
                     y += 40
-                    rm1 = tk.CTkButton(self.win, text=new, width=200, font=font_tuple, fg_color="#9C8EB3",
-                                       hover_color="#D68ADA", bg_color="#573660", hover=True,
+                    rm1 = tk.CTkButton(self.win, text=new, width=200, font=font_tuple, fg_color="#248BD6",
+                                       hover_color="#83B8FF", bg_color="#C6CDDF", hover=True,
                                        command=partial(self.on_button_click2, new))
                     rm1.place(x=w - 218, y=y)
                     self.right_buttons_list.append(rm1)
@@ -130,6 +133,8 @@ class Main:
         match button:
             case "اضافه کردن بیمار➕":
                 patient_registration.registration(self)
+            case "ویرایش بیمار✏️":
+                patient_registration.registration(self)
             case "اضافه کردن پزشک➕":
                 doctor_registration.registration(self)
             case "اضافه کردن دپارتمان➕":
@@ -138,6 +143,7 @@ class Main:
                 doctors_list.view(self)
             case "لیست بیماران🗂":
                 patients_list.view(self)
+
             case _:
                 new_ = []
                 print(new_)
@@ -145,12 +151,13 @@ class Main:
     def right_panel(self):
         w, h = self.win.winfo_screenwidth(), self.win.winfo_screenheight()
         font_tuple = ("Sahel", 15,)
-        list_ = ["پنل اصلی💢", "بیماران🦽", "پزشکان🩺", "اتاق ها🛌", "شیفت ها⏳", "نوبت دهی 📆", "دپارتمان ها🏢", "پرداخت ها💲"]
+        list_ = ["پنل اصلی💢", "بیماران🦽", "پزشکان🩺", "اتاق ها🛌", "شیفت ها⏳", "نوبت دهی 📆", "خدمات🧾", "دپارتمان ها🏢",
+                 "پرداخت ها💲"]
 
         y = 85
         for it in list_:
-            rm1 = tk.CTkButton(self.win, text=it, width=220, font=font_tuple, fg_color="#927A93",
-                               hover_color="#D68ADA", bg_color="#573660", hover=True,
+            rm1 = tk.CTkButton(self.win, text=it, width=220, font=font_tuple, fg_color="#248DB6",
+                               hover_color="#0F6BAE", bg_color="#C6CDDF", hover=True,
                                command=partial(self.on_button_click, it))
             rm1.place(x=w - 236, y=y)
             self.right_buttons_list.append(rm1)
@@ -171,7 +178,7 @@ class Main:
         font_tuple = ("B Titr", 20,)
         x = 20
         for i in _list:
-            label = tk.CTkLabel(self.win, text=i, width=300, height=100, font=font_tuple, fg_color="#7C7C7C",
+            label = tk.CTkLabel(self.win, text=i, width=300, height=100, font=font_tuple, fg_color="#0F6BAE",
                                 corner_radius=10)
             label.place(x=x, y=90)
             x += 315
