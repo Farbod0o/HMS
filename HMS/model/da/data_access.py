@@ -1,9 +1,12 @@
 from sqlalchemy import create_engine, and_, or_, exc
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, joinedload
 from sqlalchemy_utils import create_database, database_exists
 from HMS.model.entity.base import Base
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import func
+
+from HMS.model.entity.patient import Patient
+from HMS.model.entity.person import Person
 
 # connection_string = "mysql+pymysql://root:root@localhost:3306/HMS"
 # if not database_exists(connection_string):
@@ -65,3 +68,8 @@ class DataAccess:
     def find_by(self, find_statement):
         entity = self.session.query(self.class_name).filter(find_statement).all()
         return entity
+
+    def find_by_conditions(self, conditions,join_statement,join_class):
+        patient_info = (
+            self.session.query(Patient).join(join_class,join_statement).filter(conditions).all())
+        return patient_info

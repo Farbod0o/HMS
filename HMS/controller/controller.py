@@ -1,7 +1,7 @@
 from HMS.model.entity.appointment import Appointment
 from HMS.model.entity.department import Department
 from HMS.model.entity.doctor import Doctor
-from HMS.model.entity.med_service import MedicalService
+from HMS.model.entity.med_serv import MedicalService
 from HMS.model.entity.patient import Patient
 from HMS.model.entity.person import Person
 from HMS.model.entity.shift import Shift
@@ -92,4 +92,4 @@ class Controller:
     @staticmethod
     @exception_handling
     def search_by_patient(name, family, userid, phone, gender, blood, birth_date):
-        return True, PatientService.query_maker(name, family, userid, phone, gender, blood, birth_date)
+        return True, PatientService.query_builder(name, family, userid, phone, gender, blood, birth_date)

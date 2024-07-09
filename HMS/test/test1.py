@@ -1,4 +1,5 @@
 from HMS.controller.controller import Controller
+from HMS.model.da.data_access import DataAccess
 from HMS.model.entity.patient import Patient
 from HMS.model.entity.shift import Shift
 day = "2024/07/07"
@@ -24,6 +25,7 @@ day = "2024/07/07"
 # print(status, app1)
 # status, app1 = Controller.add_appointment(shift, person, f"{day} 14:00:00", f"{day} 15:00:00", )
 # print(status, app1)
-
-status , searched = Controller.search_by_patient("farbod","oeswo","123454","0911211231","None","","")
+#
+status , searched = Controller.search_by_patient("farbod","","","","Male","","")
 print(searched)
+
