@@ -3,6 +3,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy_utils import create_database, database_exists
 from HMS.model.entity.base import Base
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import func
 
 # connection_string = "mysql+pymysql://root:root@localhost:3306/HMS"
 # if not database_exists(connection_string):
@@ -40,7 +41,7 @@ class DataAccess:
             self.session.refresh(entity)
             return entity
         except Exception as e:
-            print("1",e)
+            print("1", e)
             raise ValueError("Error adding {} to database: {}".format(entity, e))
 
     def edit(self, entity):

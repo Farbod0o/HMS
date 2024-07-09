@@ -20,14 +20,14 @@ class Shift(Base):
     doctor = relationship("Doctor")
 
     def __init__(self, day, start_time, end_time, doctor, medical_service,note="None",status=True):
-        self.id = None
-        self.day = day
-        self.start_time = start_time
-        self.end_time = end_time
-        self.medical_service = medical_service.id
-        self.doctor_id = doctor.id
-        self.note = note
-        self.status = status
+        self._id = None
+        self._day = day
+        self._start_time = start_time
+        self._end_time = end_time
+        self._medical_service = medical_service.id
+        self._doctor_id = doctor.id
+        self._note = note
+        self._status = status
 
     @property
     def id(self):
@@ -96,3 +96,6 @@ class Shift(Base):
     @pattern_validator(r'^.{1,100}$',"Invalid Note")
     def note(self, note):
         self._note = note
+
+    def __repr__(self):
+        return f"{self.__dict__}"

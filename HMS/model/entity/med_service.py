@@ -13,10 +13,10 @@ class MedicalService(Base):
     _status = Column("status", Boolean, default=True)
 
     def __init__(self, medical_service, note, status=True):
-        self.id = None
-        self.medical_service = medical_service
-        self.note = note
-        self.status = status
+        self._id = None
+        self._medical_service = medical_service
+        self._note = note
+        self._status = status
 
     @property
     def id(self):

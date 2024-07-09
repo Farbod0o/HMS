@@ -16,17 +16,17 @@ class Appointment(Base):
     _patient_id = Column(Integer, ForeignKey("patients_tbl.id"))
     patient = relationship("Patient")
 
-    shift_id = Column(Integer, ForeignKey("shifts_tbl.id"))
+    _shift_id = Column(Integer, ForeignKey("shifts_tbl.id"))
     shift = relationship("Shift")
 
     def __init__(self, shift, patient, start_time, end_time, cost=0, payment_status="pending"):
-        self.id = None
-        self.shift_id = shift.id
-        self.start_time = start_time
-        self.end_time = end_time
-        self.patient_id = patient.id
-        self.cost = cost
-        self.payment_status = payment_status
+        self._id = None
+        self._shift_id = shift.id
+        self._start_time = start_time
+        self._end_time = end_time
+        self._patient_id = patient.id
+        self._cost = cost
+        self._payment_status = payment_status
 
     @property
     def id(self):
@@ -35,6 +35,14 @@ class Appointment(Base):
     @id.setter
     def id(self, id):
         self._id = id
+
+    @property
+    def shift_id(self):
+        return self._shift_id
+
+    @shift_id.setter
+    def shift_id(self, shift_id):
+        self._shift_id = shift_id
 
     @property
     def start_time(self):
@@ -85,3 +93,6 @@ class Appointment(Base):
     @patient_id.setter
     def patient_id(self, patient_id):
         self._patient_id = patient_id
+
+    def __repr__(self):
+        return f"{self.__dict__}"

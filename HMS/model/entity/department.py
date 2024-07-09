@@ -12,9 +12,9 @@ class Department(Base):
     doctor = relationship("Doctor")
 
     def __init__(self, name, head):
-        self.id = None
-        self.name = name
-        self.head_id = head.id
+        self._id = None
+        self._name = name
+        self._head_id = head.id
 
     def __repr__(self):
         return f"{self.__dict__}"

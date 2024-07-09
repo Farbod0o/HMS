@@ -6,6 +6,7 @@ from HMS.model.entity.patient import Patient
 from HMS.model.entity.person import Person
 from HMS.model.entity.shift import Shift
 from HMS.model.service.appointment_sercvice import AppointmentService
+from HMS.model.service.patient_service import PatientService
 from HMS.model.service.service import Service
 from HMS.model.tools.decorators import exception_handling
 
@@ -51,6 +52,7 @@ class Controller:
     def add_patient(cls, name, family, user, password, password2, birth, role, phone, email, address, gender, blood):
         status, person = cls.add_person(name, family, user, password, password2, birth, role, phone, email, address)
         patient = Patient(person, gender, blood)
+        print(type(patient),"-----------")
         return True, Service.save(patient,Patient)
 
     @classmethod
@@ -86,3 +88,8 @@ class Controller:
     def add_appointment(cls,shift, patient, start_time, end_time):
         appointment = Appointment(shift, patient, start_time, end_time)
         return True, AppointmentService.save(shift,appointment)
+
+    @staticmethod
+    @exception_handling
+    def search_by_patient(name, family, userid, phone, gender, blood, birth_date):
+        return True, PatientService.query_maker(name, family, userid, phone, gender, blood, birth_date)

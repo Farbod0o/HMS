@@ -6,6 +6,7 @@ from HMS.model.entity.patient import Patient
 from HMS.controller.controller import Controller
 from HMS.view.component.label_text import TextWithLabel
 import HMS.view.patient.register as patient_registration
+import HMS.view.patient.search as patient_search
 import HMS.view.doctor.register as doctor_registration
 import HMS.view.department.register as department_registration
 import HMS.view.doctor.info_table as doctors_list
@@ -74,13 +75,13 @@ class Main:
         w, h = self.win.winfo_screenwidth(), self.win.winfo_screenheight()
         font_tuple = ("B Titr", 20,)
 
-        tk.CTkLabel(self.win, text=f"سیستم مدیریت بیمارستان\n پنل {to_per[self.logged_in.role]}", bg_color="#57A0AA",
-                    font=font_tuple, width=w, height=75).place(x=0, y=0)
+        tk.CTkLabel(self.win, text=f"سیستم مدیریت بیمارستان\n پنل {to_per[self.logged_in.role]}", bg_color="#374A69",
+                    text_color="#E1F9FF", font=font_tuple, width=w, height=75).place(x=0, y=0)
 
-        tk.CTkButton(self.win, text="خروج", font=font_tuple, bg_color="#57A0AA", command=self.win.destroy).place(x=20,
+        tk.CTkButton(self.win, text="خروج", font=font_tuple, bg_color="#374A69", command=self.win.destroy).place(x=20,
                                                                                                                  y=8)
         font_tuple = ("Sahel", 12,)
-        switch = tk.CTkSwitch(self.win, text="حالت تیره🌓", command=self.switch_event, bg_color="#57A0AA",
+        switch = tk.CTkSwitch(self.win, text="حالت تیره🌓", command=self.switch_event, bg_color="#374A69",
                               font=font_tuple, variable=self.switch_var, onvalue="on", offvalue="off")
         switch.place(x=35, y=51)
         tk.CTkLabel(self.win, text="", bg_color="#C6CDDF", font=font_tuple, width=250, height=h).place(x=w - 250, y=75)
@@ -135,6 +136,8 @@ class Main:
                 patient_registration.registration(self)
             case "ویرایش بیمار✏️":
                 patient_registration.registration(self)
+            case "جزئیات بیمار🔍":
+                patient_search.search_patient(self)
             case "اضافه کردن پزشک➕":
                 doctor_registration.registration(self)
             case "اضافه کردن دپارتمان➕":
@@ -148,6 +151,11 @@ class Main:
                 new_ = []
                 print(new_)
 
+    def search_patient(self):
+        _ = [self.name.text, self.family.text, self.user.text, self.phone.text, self.gender.text, self.blood_type.text,
+             self.birthday]
+        for field in _:
+            print(field)
     def right_panel(self):
         w, h = self.win.winfo_screenwidth(), self.win.winfo_screenheight()
         font_tuple = ("Sahel", 15,)
@@ -179,7 +187,7 @@ class Main:
         x = 20
         for i in _list:
             label = tk.CTkLabel(self.win, text=i, width=300, height=100, font=font_tuple, fg_color="#0F6BAE",
-                                corner_radius=10)
+                                text_color="#D9E9FF", corner_radius=10)
             label.place(x=x, y=90)
             x += 315
 
