@@ -6,16 +6,16 @@ day = "2024/07/07"
 # status, service = Controller.add_service("visit", "Note")
 # print(status, service)
 #
-# natcode = 1909229193
-# status, doc = Controller.add_doctor("farbod", "orang", f"{natcode}", "1234", "1234", "1998-04-04",
-#                                     "Doctor", "09122655738", "adad@gmail.com", "address",
-#                                     "Oncologist", "test", "sub", "exp")
+natcode = 1911229113
+status, doc = Controller.add_doctor("محمد", "پورمحمد", f"{natcode}", "1234", "1234", "1998-04-04",
+                                    "Doctor", "09122655738", "adad@gmail.com", "address",
+                                    "Oncologist", "test", "sub", "exp")
 #
 # status, shift = Controller.add_shift(day, f"{day} 12:00:00", f"{day} 22:00:00", doc, service)
-#
-status, person = Controller.add_patient("امیرحسین", "family", "1511557781", "123a", "123a",
-                                        "1998-04-04", "Patient", "09122655738", "adad@gmail.com",
-                                        "address ", "Male", "A+")
+# #
+# status, person = Controller.add_patient("امیرحسین", "family", "1511557781", "123a", "123a",
+#                                         "1998-04-04", "Patient", "09122655738", "adad@gmail.com",
+#                                         "address ", "Male", "A+")
 
 # shift = Controller.find_by_id(Shift,1)
 # person = Controller.find_by_id(Patient,1)

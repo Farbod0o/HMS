@@ -1,11 +1,9 @@
-import tkinter.ttk as ttk
 import customtkinter as tk
 
 
 class TextWithLabel:
     def __init__(self, master, text, x, y, font_conf, distance=10, v_distance=0, disabled=False, data_type="str",
-                 combo=None, label_width=30, entry_width=30, ebgc="aquamarine2", show=None, bind_func=None,
-                 placeholder=None):
+                 combo=None, label_width=30, entry_width=30, ebgc="aquamarine2", show=None):
         tk.CTkLabel(master, text=text, width=label_width, anchor='e', font=font_conf).place(x=x, y=y)
 
         match data_type:

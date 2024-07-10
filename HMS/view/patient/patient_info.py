@@ -14,7 +14,10 @@ class PatientInfo:
         win.title("Patient Info")
         win.geometry("400x400")
         font_tuple = ("Sahel", 13,)
-        cls.table.destroy()
+        try:
+            cls.table.destroy()
+        except:
+            pass
         tk.CTkLabel(win, text=f"نام و نام خانوادگی : {patient.person.name} {patient.person.family}", anchor='e', width=370,
                     font=font_tuple).place(x=20, y=20)
         tk.CTkLabel(win, text=f"کدملی : {patient.person.username}", anchor='e', width=370,font=font_tuple).place(x=20, y=50)

@@ -25,21 +25,15 @@ class Service:
         return entity_da.find_by(entity._username == username)
 
     @staticmethod
-    def find_by_username(entity,username):
+    def find_by(entity,statement):
         entity_da = DataAccess(entity)
-        return entity_da.find_by(entity._username == username)
+        return entity_da.find_by(statement)
+    @staticmethod
+    def edit(obj,entity):
+        entity_da = DataAccess(entity)
+        return entity_da.edit(obj)
 
 
-
-
-    # @staticmethod
-    # def edit(ticket):
-    #     ticket_da = DataAccess(Ticket)
-    #     if ticket_da.find_by_id(ticket.id):
-    #         ticket_da.edit(ticket)
-    #         return ticket
-    #     else:
-    #         raise TicketNotFoundError()
 
     # @staticmethod
     # def remove(id):

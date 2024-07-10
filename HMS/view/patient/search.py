@@ -23,5 +23,4 @@ def search_patient(self):
 
     self.birthday = TextWithLabel(self.win, ':تاریخ تولد', 700, 330, font_conf=font_tuple, distance=0,
                                   v_distance=35, entry_width=150, label_width=150)
-
     tk.CTkButton(self.win, text="جست و جو🔍", width=150, font=font_tuple, command=self.search_patient).place(x=505, y=360)

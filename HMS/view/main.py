@@ -7,10 +7,12 @@ from HMS.controller.controller import Controller
 from HMS.view.component.label_text import TextWithLabel
 import HMS.view.patient.register as patient_registration
 import HMS.view.patient.search as patient_search
+import HMS.view.doctor.search as doctor_search
 import HMS.view.doctor.register as doctor_registration
 import HMS.view.department.register as department_registration
 import HMS.view.doctor.info_table as doctors_list
 import HMS.view.patient.info_table as patients_list
+from HMS.view.doctor import doctor_info
 from HMS.view.patient import patient_info
 
 
@@ -104,7 +106,7 @@ class Main:
             case "بیماران🦽":
                 new_ = ["اضافه کردن بیمار➕", "لیست بیماران🗂", "ویرایش بیمار✏️", "جزئیات بیمار🔍"]
             case "پزشکان🩺":
-                new_ = ["اضافه کردن پزشک➕", "لیست پزشکان🗂", "ویرایش دکتر✏️", "جزئیات دکتر🔍"]
+                new_ = ["اضافه کردن پزشک➕", "لیست پزشکان🗂", "ویرایش پزشک✏️", "جزئیات پزشک🔍"]
             case "دپارتمان ها🏢":
                 new_ = ["اضافه کردن دپارتمان➕", "لیست دپارتمان ها🗂", "ویرایش دپارتمان✏️", "جزئیات دپارتمان🔍"]
             case "خدمات🧾":
@@ -131,16 +133,32 @@ class Main:
             y += 40
 
     def on_button_click2(self, button):
+        font_tuple = ("Sahel", 15,)
         self.clear_sc()
         match button:
             case "اضافه کردن بیمار➕":
                 patient_registration.registration(self)
             case "ویرایش بیمار✏️":
-                patient_registration.registration(self)
+                user_id = TextWithLabel(self.win, ": کدملی", 1200, 210, entry_width=150, distance=160,
+                                        font_conf=font_tuple)
+                button = tk.CTkButton(self.win, text="✅", width=10, font=font_tuple, fg_color="#248DB6",
+                                      hover_color="#0F6BAE", hover=True,
+                                      command=partial(patient_registration.edit, self, user_id))
+                button.place(x=990, y=212)
             case "جزئیات بیمار🔍":
                 patient_search.search_patient(self)
             case "اضافه کردن پزشک➕":
                 doctor_registration.registration(self)
+            case "ویرایش پزشک✏️":
+
+                user_id = TextWithLabel(self.win, ":کدملی", 1200, 210, entry_width=150, distance=160,
+                                        font_conf=font_tuple)
+                button = tk.CTkButton(self.win, text="✅", width=10, font=font_tuple, fg_color="#248DB6",
+                                      hover_color="#0F6BAE", hover=True,
+                                      command=partial(doctor_registration.edit, self, user_id))
+                button.place(x=990, y=212)
+            case "جزئیات پزشک🔍":
+                doctor_search.search_doctor(self)
             case "اضافه کردن دپارتمان➕":
                 department_registration.registration(self)
             case "لیست پزشکان🗂":
@@ -156,14 +174,26 @@ class Main:
         status, p_list = Controller.search_by_patient(self.name.text, self.family.text, self.user.text, self.phone.text,
                                                       self.gender.text, self.blood_type.text, self.birthday.text)
 
-        print(status,p_list)
+        print(status, p_list)
         if len(p_list) == 1:
-            patient_info.PatientInfo.show(self,p_list[0])
-        elif len(p_list)>1:
-            patient_info.PatientInfo.show_menu(self,p_list)
+            patient_info.PatientInfo.show(self, p_list[0])
+        elif len(p_list) > 1:
+            patient_info.PatientInfo.show_menu(self, p_list)
         else:
-            msg.showinfo("info","بیماری با این مشخصات یافت نشد")
+            msg.showinfo("info", "بیماری با این مشخصات یافت نشد")
 
+    def search_doctor(self):
+        status, d_list = Controller.search_by_doctor(self.name.text, self.family.text, self.user.text, self.phone.text,
+                                                      self.specialty.text, self.sub_specialty.text, self.department.text,
+                                                      self.birthday.text)
+
+        print(status, d_list)
+        if len(d_list) == 1:
+            doctor_info.DoctorInfo.show(self, d_list[0])
+        elif len(d_list) > 1:
+            doctor_info.DoctorInfo.show_menu(self, d_list)
+        else:
+            msg.showinfo("info", "پزشکی با این مشخصات یافت نشد")
 
     def right_panel(self):
         w, h = self.win.winfo_screenwidth(), self.win.winfo_screenheight()
@@ -177,6 +207,7 @@ class Main:
                                hover_color="#0F6BAE", bg_color="#C6CDDF", hover=True,
                                command=partial(self.on_button_click, it))
             rm1.place(x=w - 236, y=y)
+            self.right_buttons_list.append(rm1)
             self.right_buttons_list.append(rm1)
             y += 40
 

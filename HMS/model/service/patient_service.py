@@ -18,4 +18,3 @@ class PatientService(Service):
 
         res = entity_da.find_by_conditions(and_(*conditions),Patient._person_id == Person._id,Person)
         return res
-
