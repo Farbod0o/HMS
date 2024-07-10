@@ -10,20 +10,22 @@ from HMS.model.entity.patient import Patient
 def view(self, p=1):
     self.clear_sc()
     status, all_patients = Controller.find_all(Patient)
-    value = [['وضعیت', 'شرح حال', 'ایمیل', 'شماره همراه', 'گروه خونی', 'جنسیت', 'خانوادگی نام و نام ', 'آیدی']]
+    value = [['وضعیت', 'حال شرح', 'ایمیل', 'همراه شماره', 'خونی گروه', 'جنسیت', 'خانوادگی نام و نام ', 'آیدی']]
 
     num = len(all_patients)
     for patient in all_patients[(p - 1) * 15:15 * p]:
-        status = patient._person.status
+        status = patient.person.status
         if status == 1:
             status = "Available"
-        if patient._person.deleted == 0:
-            _ = [status, patient.current_conditions, patient._person.email, patient._person.phone, patient.blood_type,
-                 patient.gender, f"{patient._person.name} {patient._person.family}",
+        if patient.person.deleted == 0:
+            _ = [status, patient.current_conditions, patient.person.email, patient.person.phone, patient.blood_type,
+                 patient.gender, f"{patient.person.name} {patient.person.family}",
                  patient.id]
             value.append(_)
     if num > 15:
         num = math.ceil(num / 15)
+    else:
+        num = 1
     font_tuple = ("Sahel", 15)
     x = 658 - num * 12
     for i in range(num):

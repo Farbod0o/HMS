@@ -92,4 +92,6 @@ class Controller:
     @staticmethod
     @exception_handling
     def search_by_patient(name, family, userid, phone, gender, blood, birth_date):
+        print("----------------------------")
+        print(name, family, userid, phone, gender, blood, birth_date)
         return True, PatientService.query_builder(name, family, userid, phone, gender, blood, birth_date)

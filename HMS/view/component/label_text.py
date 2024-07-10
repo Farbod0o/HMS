@@ -18,7 +18,7 @@ class TextWithLabel:
             case "bool":
                 self._variable = tk.BooleanVar()
 
-        txt = tk.CTkEntry(master, width=entry_width, textvariable=self._variable, show=show)
+        txt = tk.CTkEntry(master, width=entry_width,font=font_conf, textvariable=self._variable, show=show)
 
         if combo:
             self._variable = tk.StringVar()

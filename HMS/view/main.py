@@ -11,6 +11,7 @@ import HMS.view.doctor.register as doctor_registration
 import HMS.view.department.register as department_registration
 import HMS.view.doctor.info_table as doctors_list
 import HMS.view.patient.info_table as patients_list
+from HMS.view.patient import patient_info
 
 
 class Main:
@@ -152,10 +153,18 @@ class Main:
                 print(new_)
 
     def search_patient(self):
-        _ = [self.name.text, self.family.text, self.user.text, self.phone.text, self.gender.text, self.blood_type.text,
-             self.birthday]
-        for field in _:
-            print(field)
+        status, p_list = Controller.search_by_patient(self.name.text, self.family.text, self.user.text, self.phone.text,
+                                                      self.gender.text, self.blood_type.text, self.birthday.text)
+
+        print(status,p_list)
+        if len(p_list) == 1:
+            patient_info.PatientInfo.show(self,p_list[0])
+        elif len(p_list)>1:
+            patient_info.PatientInfo.show_menu(self,p_list)
+        else:
+            msg.showinfo("info","بیماری با این مشخصات یافت نشد")
+
+
     def right_panel(self):
         w, h = self.win.winfo_screenwidth(), self.win.winfo_screenheight()
         font_tuple = ("Sahel", 15,)

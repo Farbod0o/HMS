@@ -50,7 +50,7 @@ class Person(Base):
         return self._name
 
     @name.setter
-    @pattern_validator(r"^[a-zA-Z\s]{2,30}$", "Invalid Name")
+    @pattern_validator(r"^[\u0600-\u06FF\s]{2,30}$", "Invalid Name")
     def name(self, name):
         self._name = name
 
@@ -59,7 +59,7 @@ class Person(Base):
         return self._family
 
     @family.setter
-    @pattern_validator(r"^[a-zA-Z\s]{2,30}$", "Invalid Family")
+    @pattern_validator(r"^[\u0600-\u06FF\s]{2,30}$", "Invalid Family")
     def family(self, family):
         self._family = family
 
