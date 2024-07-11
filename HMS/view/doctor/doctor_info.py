@@ -43,7 +43,6 @@ class DoctorInfo:
         win.mainloop()
 
     @classmethod
-    # todo: کامل شود
     def show_menu(cls, self, doctor, p=1):
         all_doctors = doctor
         value = [['کدملی', 'ایمیل', 'همراه شماره', 'فوق', 'تخصص', 'کدملی', 'خانوادگی نام و نام ', 'آیدی']]

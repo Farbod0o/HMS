@@ -32,7 +32,7 @@ class Department(Base):
         return self._name
 
     @name.setter
-    @pattern_validator(r"^[a-zA-Z\s]{2,30}$","Invalid Department Name")
+    @pattern_validator(r"^.{2,30}$","Invalid Department Name")
     def name(self, name):
         self._name = name
 
