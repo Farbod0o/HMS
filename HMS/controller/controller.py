@@ -53,13 +53,13 @@ class Controller:
     def add_patient(cls, name, family, user, password, password2, birth, role, phone, email, address, gender, blood):
         status, person = cls.add_person(name, family, user, password, password2, birth, role, phone, email, address)
         patient = Patient(person, gender, blood)
-        print(type(patient), "-----------")
         return True, Service.save(patient, Patient)
 
     @classmethod
     @exception_handling
     def add_service(cls, service_name, note):
         med_service = MedicalService(service_name, note)
+        print(med_service)
         return True, Service.save(med_service, MedicalService)
 
     @classmethod
@@ -97,11 +97,9 @@ class Controller:
     @staticmethod
     @exception_handling
     def search_by_patient(name, family, userid, phone, gender, blood, birth_date):
-        print(name, family, userid, phone, gender, blood, birth_date)
         return True, PatientService.query_builder(name, family, userid, phone, gender, blood, birth_date)
 
     @staticmethod
     @exception_handling
     def search_by_doctor(name, family, userid, phone, speciality, sub, department, birth_date):
-        print(name, family, userid, phone, speciality, sub, department, birth_date)
         return True, DoctorService.query_builder(name, family, userid, phone, speciality, sub, department, birth_date)

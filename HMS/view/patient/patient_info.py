@@ -1,24 +1,21 @@
-import math
-from functools import partial
+
 from CTkTable import *
 import customtkinter as tk
-from HMS.controller.controller import Controller
-from HMS.model.entity.patient import Patient
 from HMS.view.component.CTkXYFrame import CTkXYFrame
 from datetime import datetime
 
 
 class PatientInfo:
     @classmethod
-    def show(cls, self, patient):
+    def show(cls, patient):
         win = tk.CTk()
         win.title("Patient Info")
         win.geometry("400x400")
         font_tuple = ("Sahel", 13,)
         try:
             cls.table.destroy()
-        except:
-            pass
+        except Exception as e:
+            print(e)
         tk.CTkLabel(win, text=f"نام و نام خانوادگی : {patient.person.name} {patient.person.family}", anchor='e',
                     width=370,
                     font=font_tuple).place(x=20, y=20)
@@ -42,20 +39,17 @@ class PatientInfo:
         win.mainloop()
 
     @classmethod
-    def show_menu(cls, self, patient, p=1):
+    def show_menu(cls, self, patient):
         all_patients = patient
         font_tuple = ("Sahel", 14)
-        value = [[ 'حال شرح', 'همراه شماره', 'خونی گروه', 'کدملی', 'سن', 'جنسیت', 'مشخصات', 'آیدی']]
+        value = [['حال شرح', 'همراه شماره', 'خونی گروه', 'کدملی', 'سن', 'جنسیت', 'مشخصات', 'آیدی']]
         xy_frame = CTkXYFrame(self.win, width=1540, height=430)
         xy_frame.place(x=20, y=410)
 
         for patient in all_patients:
-            status = patient.person.status
-            if status == 1:
-                status = "Available"
             if patient.person.deleted == 0:
                 _ = [patient.current_conditions, patient.person.phone, patient.blood_type,
-                     patient.person.username,cls.calculateAge(patient.person.birth_date),
+                     patient.person.username,cls.calculate_age(patient.person.birth_date),
                      patient.gender, f"{patient.person.name} {patient.person.family}",
                      patient.id]
                 value.append(_)
@@ -64,7 +58,7 @@ class PatientInfo:
         cls.table.pack(fill="both", expand=True, padx=5, pady=5)
 
     @classmethod
-    def calculateAge(cls,born):
+    def calculate_age(cls, born):
         today = datetime.today()
         try:
             birthday = born.replace(year=today.year)

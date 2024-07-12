@@ -21,18 +21,18 @@ class Person(Base):
 
     def __init__(self, name, family, username, password, birth_date, role,
                  phone=None, email=None, address=None, status=True, deleted=False):
-        self._id = None
-        self._name = name
-        self._family = family
-        self._username = username
-        self._password = password
-        self._birth_date = birth_date
-        self._role = role
-        self._phone = phone
-        self._email = email
-        self._address = address
-        self._status = status
-        self._deleted = deleted
+        self.id = None
+        self.name = name
+        self.family = family
+        self.username = username
+        self.password = password
+        self.birth_date = birth_date
+        self.role = role
+        self.phone = phone
+        self.email = email
+        self.address = address
+        self.status = status
+        self.deleted = deleted
 
     def __repr__(self):
         return f"{self.__dict__}"

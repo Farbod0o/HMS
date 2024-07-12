@@ -23,6 +23,8 @@ def view(self, p=1):
             value.append(_)
     if num > 15:
         num = math.ceil(num / 15)
+    else:
+        num = 1
     font_tuple = ("Sahel", 15)
     x = 658 - num * 12
     for i in range(num):

@@ -1,7 +1,4 @@
-import math
-from functools import partial
 from CTkTable import *
-
 import customtkinter as tk
 
 from HMS.view.component.CTkXYFrame import CTkXYFrame
@@ -9,15 +6,15 @@ from HMS.view.component.CTkXYFrame import CTkXYFrame
 
 class DoctorInfo:
     @classmethod
-    def show(cls, self, doctor):
+    def show(cls, doctor):
         win = tk.CTk()
         win.title("Doctor Info")
         win.geometry("400x450")
-        font_tuple = ("Sahel", 13,)
+        font_tuple = ("Sahel", 14,)
         try:
             cls.table.destroy()
-        except:
-            pass
+        except Exception as e:
+            print(e)
         tk.CTkLabel(win, text=f"نام و نام خانوادگی : {doctor.person.name} {doctor.person.family}", anchor='e',
                     width=370,
                     font=font_tuple).place(x=20, y=20)
@@ -45,25 +42,18 @@ class DoctorInfo:
         win.mainloop()
 
     @classmethod
-    def show_menu(cls, self, doctor, p=1):
+    def show_menu(cls, self, doctor):
         all_doctors = doctor
-        value = [['کدملی', 'ایمیل', 'همراه شماره','دپارتمان', 'فوق', 'تخصص', 'کدملی', 'خانوادگی نام و نام ', 'آیدی']]
+        value = [['کدملی', 'ایمیل', 'همراه شماره', 'دپارتمان', 'فوق', 'تخصص', 'کدملی', 'خانوادگی نام و نام ', 'آیدی']]
         font_tuple = ("Sahel", 13)
         xy_frame = CTkXYFrame(self.win, width=1540, height=430)
         xy_frame.place(x=20, y=410)
-        num = len(all_doctors)
         for doctor in all_doctors:
-            status = doctor.person.status
-            if status == 1:
-                status = "Available"
             if doctor.person.deleted == 0:
-                _ = [doctor.person.username, doctor.person.email, doctor.person.phone,doctor.department, doctor.sub_specialty,
-                     doctor.specialty, doctor.person.username, f"{doctor.person.name} {doctor.person.family}",
-                     doctor.id]
+                _ = [doctor.person.username, doctor.person.email, doctor.person.phone, doctor.department,
+                     doctor.sub_specialty, doctor.specialty, doctor.person.username,
+                     f"{doctor.person.name} {doctor.person.family}", doctor.id]
                 value.append(_)
 
-
-        # cls.table = CTkTable(master=self.win, row=8, column=8, font=font_tuple, wraplength=250, values=value)
-        # cls.table.place(x=20, y=430)
         cls.table = CTkTable(master=xy_frame, row=len(value), column=9, font=font_tuple, wraplength=250, values=value)
         cls.table.pack(fill="both", expand=True, padx=5, pady=5)

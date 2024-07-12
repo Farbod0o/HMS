@@ -8,15 +8,15 @@ from HMS.model.tools.validator import Validator, pattern_validator
 class MedicalService(Base):
     __tablename__ = "medical_services_tbl"
     _id = Column("id", Integer, primary_key=True, autoincrement=True)
-    _medical_service = Column("medical_service", String(20))
+    _medical_service = Column("medical_service", String(20), unique=True)
     _note = Column("note", String(255))
     _status = Column("status", Boolean, default=True)
 
     def __init__(self, medical_service, note, status=True):
-        self._id = None
-        self._medical_service = medical_service
-        self._note = note
-        self._status = status
+        self.id = None
+        self.medical_service = medical_service
+        self.note = note
+        self.status = status
 
     @property
     def id(self):
@@ -31,7 +31,7 @@ class MedicalService(Base):
         return self._medical_service
 
     @medical_service.setter
-    @pattern_validator(r"^[a-zA-Z\s]{2,30}$", "Invalid Medical Service")
+    @pattern_validator(r"^[\u0600-\u06FF\sa-zA-Z]{2,30}$", "Invalid Medical Service Name")
     def medical_service(self, medical_service):
         self._medical_service = medical_service
 

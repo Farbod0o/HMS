@@ -15,6 +15,8 @@ import HMS.view.patient.info_table as patients_list
 import HMS.view.doctor.info_table as doctors_list
 import HMS.view.patient.search as patient_search
 import HMS.view.doctor.search as doctor_search
+import HMS.view.med_serv.register as med_serv_registration
+import HMS.view.med_serv.info_table as services_list
 
 
 class Main:
@@ -137,6 +139,7 @@ class Main:
         font_tuple = ("Sahel", 15,)
         self.clear_sc()
         match button:
+            #patient
             case "اضافه کردن بیمار➕":
                 patient_registration.registration(self)
             case "ویرایش بیمار✏️":
@@ -148,6 +151,10 @@ class Main:
                 button.place(x=990, y=212)
             case "جزئیات بیمار🔍":
                 patient_search.search_patient(self)
+            case "لیست بیماران🗂":
+                patients_list.view(self)
+
+            #doctor
             case "اضافه کردن پزشک➕":
                 doctor_registration.registration(self)
             case "ویرایش پزشک✏️":
@@ -160,12 +167,27 @@ class Main:
                 button.place(x=990, y=212)
             case "جزئیات پزشک🔍":
                 doctor_search.search_doctor(self)
-            case "اضافه کردن دپارتمان➕":
-                department_registration.registration(self)
             case "لیست پزشکان🗂":
                 doctors_list.view(self)
-            case "لیست بیماران🗂":
-                patients_list.view(self)
+
+            #department
+            case "اضافه کردن دپارتمان➕":
+                department_registration.registration(self)
+
+            #medical sevices
+            case "اضافه کردن سرویس➕":
+                med_serv_registration.registration(self)
+            case "لیست سرویس ها🗂":
+                services_list.view(self)
+            case "ویرایش سرویس✏️":
+                user_id = TextWithLabel(self.win, ":ایدی سرویس", 1170, 210, entry_width=150, distance=160,
+                                        font_conf=font_tuple)
+                button = tk.CTkButton(self.win, text="✅", width=10, font=font_tuple, fg_color="#248DB6",
+                                      hover_color="#0F6BAE", hover=True,
+                                      command=partial(med_serv_registration.edit, self, user_id))
+                button.place(x=968, y=212)
+
+
 
             case _:
                 new_ = []
@@ -250,7 +272,7 @@ class Main:
                                                  self.blood_type.text)
 
         if status:
-            MessageBox.show_checkmark(master=self,message="بیمار با موفقیت ثبت شد")
+            MessageBox.show_checkmark(master=self, message="بیمار با موفقیت ثبت شد")
         else:
             MessageBox.show_error(f"Patient Registered failed because of {patient} error")
 
@@ -260,7 +282,7 @@ class Main:
         status, doctor = Controller.add_doctor(self.name.text, self.family.text, self.user.text, self.password.text,
                                                self.password2.text, self.birthday.text, "Doctor", self.phone.text,
                                                self.email.text, self.address.text, self.specialty.text,
-                                               self.department.text,self.sub_specialty.text, self.experience.text)
+                                               self.department.text, self.sub_specialty.text, self.experience.text)
 
         if status:
             MessageBox.show_checkmark("پزشک با موفقیت به ثبت رسید!")
@@ -274,6 +296,13 @@ class Main:
             MessageBox.show_checkmark(master=self, message="دپارتمان با موفقیت ثبت شد!")
         else:
             MessageBox.show_error(f"Department Registered failed because of {department} error")
+
+    def add_med_serv(self):
+        status, service = Controller.add_service(self.name.text, self.note.text)
+        if status:
+            MessageBox.show_checkmark(master=self, message="سرویس جدید با موفقیت ثبت شد!")
+        else:
+            MessageBox.show_error(f"Medical Service Registered failed because of {service} error")
 
     def clear_sc(self):
         for child in self.win.winfo_children():

@@ -6,8 +6,8 @@ day = "2024/07/07"
 # status, service = Controller.add_service("visit", "Note")
 # print(status, service)
 #
-natcode = 1911229113
-status, doc = Controller.add_doctor("محمد", "پورمحمد", f"{natcode}", "1234", "1234", "1998-04-04",
+natcode = 1210000000
+status, doc = Controller.add_doctor("213", "پورمحمد", f"{natcode}", "1234", "1234", "1998-04-04",
                                     "Doctor", "09122655738", "adad@gmail.com", "address",
                                     "Oncologist", "test", "sub", "exp")
 #

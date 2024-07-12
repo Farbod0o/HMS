@@ -17,11 +17,11 @@ class Patient(Base):
     # appointments = relationship("Appointment", back_populates="patient")
 
     def __init__(self, person, gender, blood_type, current_conditions="None"):
-        self._id = None
-        self._gender = gender
-        self._blood_type = blood_type
-        self._current_conditions = current_conditions
-        self._person_id = person.id
+        self.id = None
+        self.gender = gender
+        self.blood_type = blood_type
+        self.current_conditions = current_conditions
+        self.person_id = person.id
 
     def __repr__(self):
         return f"{self.__dict__}"

@@ -16,12 +16,12 @@ class Doctor(Base):
     person = relationship("Person", lazy='joined')
 
     def __init__(self, person, specialty, department, sub_specialty=None, experience=None):
-        self._id = None
-        self._specialty = specialty
-        self._sub_specialty = sub_specialty
-        self._experience = experience
-        self._department = department
-        self._person_id = person.id
+        self.id = None
+        self.specialty = specialty
+        self.sub_specialty = sub_specialty
+        self.experience = experience
+        self.department = department
+        self.person_id = person.id
 
     def __repr__(self):
         return f"{self.__dict__}"
