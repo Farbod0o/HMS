@@ -4,6 +4,8 @@ from CTkTable import *
 
 import customtkinter as tk
 
+from HMS.view.component.CTkXYFrame import CTkXYFrame
+
 
 class DoctorInfo:
     @classmethod
@@ -45,29 +47,23 @@ class DoctorInfo:
     @classmethod
     def show_menu(cls, self, doctor, p=1):
         all_doctors = doctor
-        value = [['کدملی', 'ایمیل', 'همراه شماره', 'فوق', 'تخصص', 'کدملی', 'خانوادگی نام و نام ', 'آیدی']]
-
+        value = [['کدملی', 'ایمیل', 'همراه شماره','دپارتمان', 'فوق', 'تخصص', 'کدملی', 'خانوادگی نام و نام ', 'آیدی']]
+        font_tuple = ("Sahel", 13)
+        xy_frame = CTkXYFrame(self.win, width=1540, height=430)
+        xy_frame.place(x=20, y=410)
         num = len(all_doctors)
-        for doctor in all_doctors[(p - 1) * 7:7 * p]:
+        for doctor in all_doctors:
             status = doctor.person.status
             if status == 1:
                 status = "Available"
             if doctor.person.deleted == 0:
-                _ = [doctor.person.username, doctor.person.email, doctor.person.phone, doctor.sub_specialty,
+                _ = [doctor.person.username, doctor.person.email, doctor.person.phone,doctor.department, doctor.sub_specialty,
                      doctor.specialty, doctor.person.username, f"{doctor.person.name} {doctor.person.family}",
                      doctor.id]
                 value.append(_)
-        if num > 7:
-            num = math.ceil(num / 7)
-        else:
-            num = 1
-        font_tuple = ("Sahel", 14)
-        x = 658 - num * 12
-        for i in range(num):
-            i += 1
-            tk.CTkButton(self.win, text=f"{i}", width=15, font=font_tuple,
-                         command=partial(cls.show_menu, self, p=i)).place(x=x,
-                                                                          y=740)
-            x += 25
-        cls.table = CTkTable(master=self.win, row=8, column=8, font=font_tuple, wraplength=250, values=value)
-        cls.table.place(x=20, y=430)
+
+
+        # cls.table = CTkTable(master=self.win, row=8, column=8, font=font_tuple, wraplength=250, values=value)
+        # cls.table.place(x=20, y=430)
+        cls.table = CTkTable(master=xy_frame, row=len(value), column=9, font=font_tuple, wraplength=250, values=value)
+        cls.table.pack(fill="both", expand=True, padx=5, pady=5)

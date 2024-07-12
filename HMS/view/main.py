@@ -260,13 +260,12 @@ class Main:
         status, doctor = Controller.add_doctor(self.name.text, self.family.text, self.user.text, self.password.text,
                                                self.password2.text, self.birthday.text, "Doctor", self.phone.text,
                                                self.email.text, self.address.text, self.specialty.text,
-                                               self.department.text,
-                                               self.sub_specialty.text, self.experience.text)
+                                               self.department.text,self.sub_specialty.text, self.experience.text)
 
         if status:
-            msg.showinfo("Info", "Doctor Registered successfully")
+            MessageBox.show_checkmark("پزشک با موفقیت به ثبت رسید!")
         else:
-            msg.showerror("Error", f"Doctor Registered failed because of {doctor} error")
+            MessageBox.show_error(f"Doctor Registered failed because of {doctor} error")
         self.clear_sc()
 
     def add_department(self):

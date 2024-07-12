@@ -8,7 +8,7 @@ class Patient(Base):
     __tablename__ = "patients_tbl"
     _id = Column("id", Integer, primary_key=True, autoincrement=True)
     _gender = Column("gender", String(20), nullable=False)
-    _current_conditions = Column("current_conditions", String(20), nullable=False)
+    _current_conditions = Column("current_conditions", String(100), nullable=False)
     _blood_type = Column("blood_type", String(30))
 
     _person_id = Column(Integer, ForeignKey("person_tbl.id"), nullable=False)
