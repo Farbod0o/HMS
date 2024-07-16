@@ -10,7 +10,7 @@ from HMS.model.entity.patient import Patient
 def view(self, p=1):
     self.clear_sc()
     status, all_patients = Controller.find_all(Patient)
-    value = [['وضعیت', 'حال شرح', 'ایمیل', 'همراه شماره', 'خونی گروه', 'جنسیت', 'خانوادگی نام و نام ', 'آیدی']]
+    value = [['وضعیت', 'حال شرح', 'ایمیل', 'همراه شماره', 'خونی گروه', 'جنسیت', 'خانوادگی نام و نام ', 'بیمار شناسه']]
 
     num = len(all_patients)
     for patient in all_patients[(p - 1) * 15:15 * p]:
@@ -33,5 +33,5 @@ def view(self, p=1):
         tk.CTkButton(self.win, text=f"{i}", width=15, font=font_tuple, command=partial(view, self, p=i)).place(x=x,
                                                                                                                y=740)
         x += 25
-    table = CTkTable(master=self.win, row=16, column=8,wraplength=250,values=value)
+    table = CTkTable(master=self.win, row=16, column=8,width=145,wraplength=250,values=value)
     table.place(x=20, y=200)

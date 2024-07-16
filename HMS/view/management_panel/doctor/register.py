@@ -6,12 +6,16 @@ from HMS.view.component.label_text import TextWithLabel
 import customtkinter as tk
 import tkinter.messagebox as msg
 
+
 def edit(self, user_id):
     p1 = Controller.find_by_username(user_id)
-    if len(p1)>0:
+    if len(p1) > 0:
         p2 = Controller.find_by(Doctor, Doctor._person_id == p1[0].id)
-    if len(p1)>0 and len(p2) > 0:
-        p1, p2 = p1[0],p2[0]
+    else:
+        p2 = []
+
+    if len(p1) > 0 and len(p2) > 0:
+        p1, p2 = p1[0], p2[0]
         font_tuple = ("Sahel", 15,)
         self.clear_sc()
         birth_date = p1.birth_date
@@ -33,10 +37,12 @@ def edit(self, user_id):
 
         #todo: کامند دکمه درست شود
         tk.CTkButton(self.win, text="ویرایش پزشک", width=150, font=font_tuple, command=self.add_patient).place(x=1100,
-                                                                                                                y=450)
+                                                                                                               y=450)
     else:
         msg.showwarning("Warning", "پزشکی با این کد ملی یافت نشد!")
-def registration(self , button=True):
+
+
+def registration(self, button=True):
     font_tuple = ("Sahel", 15)
 
     self.name = TextWithLabel(self.win, ':نام پزشک', 1100, 200, font_conf=font_tuple, distance=0,
@@ -79,4 +85,5 @@ def registration(self , button=True):
     self.experience = TextWithLabel(self.win, text=":سابقه", x=500, y=360, font_conf=font_tuple, distance=0,
                                     v_distance=35, entry_width=350, label_width=350)
     if button:
-        tk.CTkButton(self.win, text="ثبت پزشک", width=150, font=font_tuple, command=self.add_doctor).place(x=1105, y=450)
+        tk.CTkButton(self.win, text="ثبت پزشک", width=150, font=font_tuple, command=self.add_doctor).place(x=1105,
+                                                                                                           y=450)

@@ -7,13 +7,13 @@ from datetime import datetime
 
 class PatientInfo:
     @classmethod
-    def show(cls, patient):
+    def show(cls,self, patient):
         win = tk.CTk()
         win.title("Patient Info")
         win.geometry("400x400")
         font_tuple = ("Sahel", 13,)
         try:
-            cls.table.destroy()
+            self.table.destroy()
         except Exception as e:
             print(e)
         tk.CTkLabel(win, text=f"نام و نام خانوادگی : {patient.person.name} {patient.person.family}", anchor='e',
@@ -42,7 +42,7 @@ class PatientInfo:
     def show_menu(cls, self, patient):
         all_patients = patient
         font_tuple = ("Sahel", 14)
-        value = [['حال شرح', 'همراه شماره', 'خونی گروه', 'کدملی', 'سن', 'جنسیت', 'مشخصات', 'آیدی']]
+        value = [['شرح حال', 'شماره همراه ', 'گروه خونی ', 'کدملی', 'سن', 'جنسیت', 'مشخصات', 'شناسه بیمار']]
         xy_frame = CTkXYFrame(self.win, width=1540, height=430)
         xy_frame.place(x=20, y=410)
 
@@ -54,7 +54,7 @@ class PatientInfo:
                      patient.id]
                 value.append(_)
 
-        cls.table = CTkTable(master=xy_frame, row=len(value), column=8, font=font_tuple, wraplength=250, values=value)
+        cls.table = CTkTable(master=xy_frame, row=len(value), column=8, font=font_tuple,width=150, wraplength=250, values=value)
         cls.table.pack(fill="both", expand=True, padx=5, pady=5)
 
     @classmethod

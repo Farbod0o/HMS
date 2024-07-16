@@ -6,13 +6,13 @@ from HMS.view.component.CTkXYFrame import CTkXYFrame
 
 class DoctorInfo:
     @classmethod
-    def show(cls, doctor):
+    def show(cls,self, doctor):
         win = tk.CTk()
         win.title("Doctor Info")
         win.geometry("400x450")
         font_tuple = ("Sahel", 14,)
         try:
-            cls.table.destroy()
+            self.table.destroy()
         except Exception as e:
             print(e)
         tk.CTkLabel(win, text=f"نام و نام خانوادگی : {doctor.person.name} {doctor.person.family}", anchor='e',
@@ -44,7 +44,7 @@ class DoctorInfo:
     @classmethod
     def show_menu(cls, self, doctor):
         all_doctors = doctor
-        value = [['کدملی', 'ایمیل', 'همراه شماره', 'دپارتمان', 'فوق', 'تخصص', 'کدملی', 'خانوادگی نام و نام ', 'آیدی']]
+        value = [['کدملی', 'ایمیل', 'همراه شماره', 'دپارتمان', 'فوق', 'تخصص', 'کدملی', 'خانوادگی نام و نام ', 'شناسه پزشک']]
         font_tuple = ("Sahel", 13)
         xy_frame = CTkXYFrame(self.win, width=1540, height=430)
         xy_frame.place(x=20, y=410)
@@ -55,5 +55,5 @@ class DoctorInfo:
                      f"{doctor.person.name} {doctor.person.family}", doctor.id]
                 value.append(_)
 
-        cls.table = CTkTable(master=xy_frame, row=len(value), column=9, font=font_tuple, wraplength=250, values=value)
+        cls.table = CTkTable(master=xy_frame, row=len(value), column=9,width=133, font=font_tuple, wraplength=250, values=value)
         cls.table.pack(fill="both", expand=True, padx=5, pady=5)

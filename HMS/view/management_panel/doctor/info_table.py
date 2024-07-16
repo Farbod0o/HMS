@@ -9,7 +9,7 @@ import customtkinter as tk
 def view(self, p=1):
     self.clear_sc()
     status, all_doctors = Controller.find_all(Doctor)
-    value = [['وضعیت', '', 'ایمیل', 'شماره همراه', 'دپارتمان', 'فوق-تخصص', 'خانوادگی نام و نام ', 'آیدی']]
+    value = [['وضعیت', '', 'ایمیل', 'شماره همراه', 'دپارتمان', 'فوق-تخصص', 'خانوادگی نام و نام ', 'پزشک شناسه']]
 
     num = len(all_doctors)
     for doctor in all_doctors[(p - 1) * 15:15 * p]:

@@ -1,22 +1,22 @@
-import tkinter.messagebox as msg
 from functools import partial
 import customtkinter as tk
 from HMS.view.component.msg_handler import MessageBox
-from HMS.view.doctor import doctor_info
-from HMS.view.patient import patient_info
+from HMS.view.management_panel.doctor import doctor_info
+from HMS.view.management_panel.patient import patient_info
 from HMS.model.entity.doctor import Doctor
 from HMS.model.entity.patient import Patient
 from HMS.controller.controller import Controller
 from HMS.view.component.label_text import TextWithLabel
-import HMS.view.department.register as department_registration
-import HMS.view.patient.register as patient_registration
-import HMS.view.doctor.register as doctor_registration
-import HMS.view.patient.info_table as patients_list
-import HMS.view.doctor.info_table as doctors_list
-import HMS.view.patient.search as patient_search
-import HMS.view.doctor.search as doctor_search
-import HMS.view.med_serv.register as med_serv_registration
-import HMS.view.med_serv.info_table as services_list
+import HMS.view.management_panel.department.register as department_registration
+import HMS.view.management_panel.department.department_table as department_list
+import HMS.view.management_panel.patient.register as patient_registration
+import HMS.view.management_panel.doctor.register as doctor_registration
+import HMS.view.management_panel.patient.info_table as patients_list
+import HMS.view.management_panel.doctor.info_table as doctors_list
+import HMS.view.management_panel.patient.search as patient_search
+import HMS.view.management_panel.doctor.search as doctor_search
+import HMS.view.management_panel.med_serv.register as med_serv_registration
+import HMS.view.management_panel.med_serv.info_table as services_list
 
 
 class Main:
@@ -94,7 +94,7 @@ class Main:
         self.right_panel()
 
     def on_button_click(self, button):
-        list_ = ["پنل اصلی💢", "بیماران🦽", "پزشکان🩺", "اتاق ها🛌", "شیفت ها⏳",
+        list_ = ["پنل اصلی💢", "بیماران🦽", "پزشکان🩺", "شیفت ها⏳",
                  "نوبت دهی 📆", "خدمات🧾", "دپارتمان ها🏢", "پرداخت ها💲"]
         w, h = self.win.winfo_screenwidth(), self.win.winfo_screenheight()
         for but in self.right_buttons_list:
@@ -114,6 +114,8 @@ class Main:
                 new_ = ["اضافه کردن دپارتمان➕", "لیست دپارتمان ها🗂", "ویرایش دپارتمان✏️", "جزئیات دپارتمان🔍"]
             case "خدمات🧾":
                 new_ = ["اضافه کردن سرویس➕", "لیست سرویس ها🗂", "ویرایش سرویس✏️"]
+            case "شیفت ها⏳":
+                new_ = ["اضافه کردن شیفت➕", "لیست شیفت ها🗂", "ویرایش شیفت✏️"]
             case _:
                 new_ = []
 
@@ -139,7 +141,6 @@ class Main:
         font_tuple = ("Sahel", 15,)
         self.clear_sc()
         match button:
-            #patient
             case "اضافه کردن بیمار➕":
                 patient_registration.registration(self)
             case "ویرایش بیمار✏️":
@@ -154,7 +155,6 @@ class Main:
             case "لیست بیماران🗂":
                 patients_list.view(self)
 
-            #doctor
             case "اضافه کردن پزشک➕":
                 doctor_registration.registration(self)
             case "ویرایش پزشک✏️":
@@ -170,11 +170,18 @@ class Main:
             case "لیست پزشکان🗂":
                 doctors_list.view(self)
 
-            #department
             case "اضافه کردن دپارتمان➕":
                 department_registration.registration(self)
+            case "لیست دپارتمان ها🗂":
+                department_list.view(self)
+            case "ویرایش دپارتمان✏️":
+                user_id = TextWithLabel(self.win, ":ایدی دپارتمان", 1170, 210, entry_width=150, distance=160,
+                                        font_conf=font_tuple)
+                button = tk.CTkButton(self.win, text="✅", width=10, font=font_tuple, fg_color="#248DB6",
+                                      hover_color="#0F6BAE", hover=True,
+                                      command=partial(department_registration.edit, self, user_id))
+                button.place(x=968, y=212)
 
-            #medical sevices
             case "اضافه کردن سرویس➕":
                 med_serv_registration.registration(self)
             case "لیست سرویس ها🗂":
@@ -186,8 +193,6 @@ class Main:
                                       hover_color="#0F6BAE", hover=True,
                                       command=partial(med_serv_registration.edit, self, user_id))
                 button.place(x=968, y=212)
-
-
 
             case _:
                 new_ = []
@@ -220,7 +225,7 @@ class Main:
     def right_panel(self):
         w, h = self.win.winfo_screenwidth(), self.win.winfo_screenheight()
         font_tuple = ("Sahel", 15,)
-        list_ = ["پنل اصلی💢", "بیماران🦽", "پزشکان🩺", "اتاق ها🛌", "شیفت ها⏳", "نوبت دهی 📆", "خدمات🧾", "دپارتمان ها🏢",
+        list_ = ["پنل اصلی💢", "بیماران🦽", "پزشکان🩺", "شیفت ها⏳", "نوبت دهی 📆", "خدمات🧾", "دپارتمان ها🏢",
                  "پرداخت ها💲"]
 
         y = 85
@@ -285,7 +290,7 @@ class Main:
                                                self.department.text, self.sub_specialty.text, self.experience.text)
 
         if status:
-            MessageBox.show_checkmark("پزشک با موفقیت به ثبت رسید!")
+            MessageBox.show_checkmark(master=self, message="پزشک با موفقیت به ثبت رسید!")
         else:
             MessageBox.show_error(f"Doctor Registered failed because of {doctor} error")
         self.clear_sc()

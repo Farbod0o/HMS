@@ -7,7 +7,7 @@ from HMS.model.tools.validator import Validator, pattern_validator
 class Department(Base):
     __tablename__ = "departments_tbl"
     _id = Column("id", Integer, primary_key=True, autoincrement=True)
-    _name = Column("name", String(20), nullable=False)
+    _name = Column("name", String(20), nullable=False, unique=True)
     _head_id = Column(Integer, ForeignKey("doctors_tbl.id"), nullable=False)
     doctor = relationship("Doctor")
 

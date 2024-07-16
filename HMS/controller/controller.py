@@ -13,7 +13,6 @@ from HMS.model.tools.decorators import exception_handling
 
 
 class Controller:
-
     @classmethod
     @exception_handling
     def login_check(cls, username, password):
