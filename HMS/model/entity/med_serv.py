@@ -31,7 +31,7 @@ class MedicalService(Base):
         return self._medical_service
 
     @medical_service.setter
-    @pattern_validator(r"^[\u0600-\u06FF\sa-zA-Z]{2,30}$", "Invalid Medical Service Name")
+    @pattern_validator(r"^[\u0600-\u06FF\sa-zA-Z]{3,30}$", "Invalid Medical Service Name")
     def medical_service(self, medical_service):
         self._medical_service = medical_service
 

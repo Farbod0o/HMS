@@ -4,7 +4,6 @@ from HMS.view.component.msg_handler import MessageBox
 from HMS.view.management_panel.doctor import doctor_info
 from HMS.view.management_panel.patient import patient_info
 from HMS.view.management_panel.department import department_info
-
 from HMS.model.entity.doctor import Doctor
 from HMS.model.entity.patient import Patient
 from HMS.controller.controller import Controller
@@ -14,6 +13,7 @@ import HMS.view.management_panel.department.department_table as department_list
 import HMS.view.management_panel.department.search as department_search
 import HMS.view.management_panel.patient.register as patient_registration
 import HMS.view.management_panel.doctor.register as doctor_registration
+import HMS.view.management_panel.shifts.register as shift_registration
 import HMS.view.management_panel.patient.info_table as patients_list
 import HMS.view.management_panel.doctor.info_table as doctors_list
 import HMS.view.management_panel.patient.search as patient_search
@@ -144,6 +144,8 @@ class Main:
         font_tuple = ("Sahel", 15,)
         self.clear_sc()
         match button:
+            case "اضافه کردن شیفت➕":
+                shift_registration.registration(self)
             case "اضافه کردن بیمار➕":
                 patient_registration.registration(self)
             case "ویرایش بیمار✏️":
