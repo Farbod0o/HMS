@@ -3,12 +3,15 @@ import customtkinter as tk
 from HMS.view.component.msg_handler import MessageBox
 from HMS.view.management_panel.doctor import doctor_info
 from HMS.view.management_panel.patient import patient_info
+from HMS.view.management_panel.department import department_info
+
 from HMS.model.entity.doctor import Doctor
 from HMS.model.entity.patient import Patient
 from HMS.controller.controller import Controller
 from HMS.view.component.label_text import TextWithLabel
 import HMS.view.management_panel.department.register as department_registration
 import HMS.view.management_panel.department.department_table as department_list
+import HMS.view.management_panel.department.search as department_search
 import HMS.view.management_panel.patient.register as patient_registration
 import HMS.view.management_panel.doctor.register as doctor_registration
 import HMS.view.management_panel.patient.info_table as patients_list
@@ -181,6 +184,8 @@ class Main:
                                       hover_color="#0F6BAE", hover=True,
                                       command=partial(department_registration.edit, self, user_id))
                 button.place(x=968, y=212)
+            case "جزئیات دپارتمان🔍":
+                department_search.search_department(self)
 
             case "اضافه کردن سرویس➕":
                 med_serv_registration.registration(self)
@@ -197,6 +202,13 @@ class Main:
             case _:
                 new_ = []
                 print(new_)
+
+    def search_department(self):
+        status, p_list = Controller.search_by_department(self.name.text, self.department.text)
+        if len(p_list) == 1:
+            department_info.DepartmentInfo.show_menu(self, p_list)
+        else:
+            MessageBox.show_warning("دپارتمانی با این مشخصات یافت نشد")
 
     def search_patient(self):
         status, p_list = Controller.search_by_patient(self.name.text, self.family.text, self.user.text, self.phone.text,

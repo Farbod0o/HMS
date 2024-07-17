@@ -1,5 +1,5 @@
-from sqlalchemy import create_engine, and_, or_, exc
-from sqlalchemy.orm import sessionmaker, joinedload
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 from sqlalchemy_utils import create_database, database_exists
 from HMS.model.entity.base import Base
 from sqlalchemy.ext.declarative import declarative_base
@@ -53,6 +53,6 @@ class DataAccess:
         return entity
 
     def find_by_conditions(self, conditions, join_statement, join_class):
-        patient_info = (
+        _info = (
             self.session.query(self.class_name).join(join_class, join_statement).filter(conditions).all())
-        return patient_info
+        return _info

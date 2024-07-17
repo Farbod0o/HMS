@@ -6,6 +6,7 @@ from HMS.model.entity.patient import Patient
 from HMS.model.entity.person import Person
 from HMS.model.entity.shift import Shift
 from HMS.model.service.appointment_sercvice import AppointmentService
+from HMS.model.service.department_service import DepartmentService
 from HMS.model.service.doctor_service import DoctorService
 from HMS.model.service.patient_service import PatientService
 from HMS.model.service.service import Service
@@ -102,3 +103,13 @@ class Controller:
     @exception_handling
     def search_by_doctor(name, family, userid, phone, speciality, sub, department, birth_date):
         return True, DoctorService.query_builder(name, family, userid, phone, speciality, sub, department, birth_date)
+
+    @staticmethod
+    @exception_handling
+    def search_by_department(name, uid):
+        return True, DepartmentService.query_builder(name, uid)
+
+    @staticmethod
+    @exception_handling
+    def find_doc_by_department(dep_name):
+        return True , DepartmentService.find_by_department(Doctor, dep_name)

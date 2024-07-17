@@ -11,7 +11,7 @@ from HMS.model.entity.doctor import Doctor
 def view(self, p=1):
     self.clear_sc()
     status, all_departments = Controller.find_all(Department)
-    value = [['دپارتمان سرپرست', 'سرویس نام', 'دپارتمان شناسه']]
+    value = [['دپارتمان سرپرست', 'دپارتمان نام', 'دپارتمان شناسه']]
 
     num = len(all_departments)
     for department in all_departments[(p - 1) * 15:15 * p]:

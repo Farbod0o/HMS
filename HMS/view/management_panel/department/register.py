@@ -9,9 +9,7 @@ import customtkinter as tk
 
 
 def edit(self, user_id):
-    print(user_id)
-    p1 = Controller.find_by_id(Department,user_id.text)
-    print(p1)
+    p1 = Controller.find_by_id(Department, user_id.text)
     if p1:
         font_tuple = ("Sahel", 15,)
         self.clear_sc()
@@ -19,13 +17,11 @@ def edit(self, user_id):
         self.name.set_variable(p1.name)
         self.head_id.set_variable(p1._head_id)
 
-        #todo: کامند دکمه درست شود
-        tk.CTkButton(self.win, text="ویرایش دپارتمان", width=150, font=font_tuple, command=self.add_patient).place(x=1105,
-                                                                                                               y=280)
+        # todo: کامند دکمه درست شود
+        tk.CTkButton(self.win, text="ویرایش دپارتمان", width=150, font=font_tuple, command=self.add_patient).place(
+            x=1105,y=280)
     else:
         msg.showwarning("Warning", "دپارتمانی با این شناسه یافت نشد!")
-
-
 
 
 def check(self):
@@ -46,7 +42,7 @@ def check(self):
     self._.set_variable(text)
 
 
-def registration(self,button=True):
+def registration(self, button=True):
     font_tuple = ("Sahel", 15)
     self.name = TextWithLabel(self.win, ':نام دپارتمان', 1100, 200, font_conf=font_tuple, distance=0,
                               v_distance=35, entry_width=156, label_width=150)
