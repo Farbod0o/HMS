@@ -10,6 +10,8 @@ class Shift(Base):
     _day = Column("shift_date", DateTime)
     _start_time = Column("start_time", DateTime)
     _end_time = Column("end_time", DateTime)
+    _duration = Column("duration", Integer)
+    _cost = Column("cost", Integer)
     _note = Column("note", String(255))
     _status = Column("status", Boolean, default=True)
 
@@ -19,13 +21,15 @@ class Shift(Base):
     _doctor_id = Column(Integer, ForeignKey("doctors_tbl.id"))
     doctor = relationship("Doctor")
 
-    def __init__(self, day, start_time, end_time, doctor, medical_service,note="None",status=True):
+    def __init__(self, day, start_time, end_time, doctor, medical_service,duration,cost,note="None",status=True):
         self.id = None
         self.day = day
         self.start_time = start_time
         self.end_time = end_time
         self.medical_service = medical_service.id
         self.doctor_id = doctor.id
+        self.duration = duration
+        self.cost = cost
         self.note = note
         self.status = status
 
@@ -96,6 +100,22 @@ class Shift(Base):
     @pattern_validator(r'^.{1,100}$',"Invalid Note")
     def note(self, note):
         self._note = note
+
+    @property
+    def cost(self):
+        return self._cost
+
+    @cost.setter
+    def cost(self, cost):
+        self._cost = cost
+
+    @property
+    def duration(self):
+        return self._duration
+
+    @duration.setter
+    def duration(self, duration):
+        self._duration = duration
 
     def __repr__(self):
         return f"{self.__dict__}"

@@ -8,6 +8,7 @@ from HMS.model.entity.shift import Shift
 from HMS.model.service.appointment_sercvice import AppointmentService
 from HMS.model.service.department_service import DepartmentService
 from HMS.model.service.doctor_service import DoctorService
+from HMS.model.service.medical_serv_service import MedicalServService
 from HMS.model.service.patient_service import PatientService
 from HMS.model.service.service import Service
 from HMS.model.tools.decorators import exception_handling
@@ -64,8 +65,10 @@ class Controller:
 
     @classmethod
     @exception_handling
-    def add_shift(cls, day, start, end, doc, service):
-        shift = Shift(day, start, end, doc, service)
+    def add_shift(cls, day, start, end, doc, service,duration,cost,note):
+        doc = cls.find_by_id(Doctor, doc)
+        service = cls.find_medserv_by_name(service)
+        shift = Shift(day, start, end, doc, service[0],duration,cost,note)
         return True, Service.save(shift, Shift)
 
     @classmethod
@@ -94,6 +97,7 @@ class Controller:
         appointment = Appointment(shift, patient, start_time, end_time)
         return True, AppointmentService.save(shift, appointment)
 
+
     @staticmethod
     @exception_handling
     def search_by_patient(name, family, userid, phone, gender, blood, birth_date):
@@ -113,3 +117,8 @@ class Controller:
     @exception_handling
     def find_doc_by_department(dep_name):
         return True , DepartmentService.find_by_department(Doctor, dep_name)
+
+    @staticmethod
+    @exception_handling
+    def find_medserv_by_name(med):
+        return MedicalServService.find_by_name(med)

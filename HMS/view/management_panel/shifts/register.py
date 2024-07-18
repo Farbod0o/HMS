@@ -1,4 +1,7 @@
 from functools import partial
+from datetime import datetime, timedelta
+
+from CTkTable import CTkTable
 
 from HMS.controller.controller import Controller
 from HMS.model.entity.doctor import Doctor
@@ -8,10 +11,12 @@ from HMS.model.service.service import Service
 from HMS.view.component.label_text import TextWithLabel
 import customtkinter as tk
 import tkinter.messagebox as msg
+import math
+
+from HMS.view.component.msg_handler import MessageBox
 
 
 def check(self):
-    print("hi")
     font_tuple = ("Sahel", 15)
     cid = self.doctor_id.text
     doctor = Service.find_by_id(Doctor, cid)
@@ -23,7 +28,6 @@ def check(self):
         text = "{} {} {}({})".format(name, family, specialty, sub)
     else:
         text = "Not found"
-    print(text)
 
     self._.set_variable(text)
 
@@ -50,7 +54,7 @@ def edit(self, user_id):
         self.address.set_variable(p1.address)
         self.gender.set_variable(p2.gender)
         self.blood_type.set_variable(p2.blood_type)
-        #todo: کامند دکمه درست شود
+        # todo: کامند دکمه درست شود
         tk.CTkButton(self.win, text="ویرایش بیمار", width=150, font=font_tuple, command=self.add_patient).place(x=895,
                                                                                                                 y=392)
     else:
@@ -65,20 +69,21 @@ def registration(self, button=True):
         services_name.append(service.medical_service)
     self.name = TextWithLabel(self.win, ':سرویس', 1100, 200, font_conf=font_tuple, distance=0,
                               v_distance=35, entry_width=155, label_width=150, combo=services_name)
-    self.family = TextWithLabel(self.win, ':زمان شروع', 900, 200, font_conf=font_tuple, distance=0,
-                                v_distance=35, entry_width=155, label_width=150)
-    self.user = TextWithLabel(self.win, ':زمان پایان', 700, 200, font_conf=font_tuple, distance=0,
-                              v_distance=35, entry_width=155, label_width=150)
-    self.phone = TextWithLabel(self.win, ':مدت زمان هر ملاقات', 500, 200, font_conf=font_tuple, distance=0,
-                               v_distance=35, entry_width=155, label_width=150)
-    self.phone = TextWithLabel(self.win, ':یادداشت', 500, 280, font_conf=font_tuple, distance=0,
-                               v_distance=35, entry_width=155, label_width=150)
-    self.gender = TextWithLabel(self.win, ':تاریخ شروع', 1100, 280, font_conf=font_tuple, distance=0,
-                                v_distance=35, entry_width=155, label_width=150)
-    self.blood_type = TextWithLabel(self.win, ':تایخ پایان', 900, 280, font_conf=font_tuple, distance=0,
+    self.start_time = TextWithLabel(self.win, ':زمان شروع', 900, 200, font_conf=font_tuple, distance=0,
                                     v_distance=35, entry_width=155, label_width=150)
-    self.password = TextWithLabel(self.win, ':هزینه هر ملاقات', 700, 280, font_conf=font_tuple, distance=0,
+    self.end_time = TextWithLabel(self.win, ':زمان پایان', 700, 200, font_conf=font_tuple, distance=0,
                                   v_distance=35, entry_width=155, label_width=150)
+    self.duration = TextWithLabel(self.win, ':مدت زمان هر ملاقات', 500, 200, font_conf=font_tuple, distance=0,
+                                  v_distance=35, entry_width=155, data_type="int", label_width=150)
+    self.note = TextWithLabel(self.win, ':یادداشت', 500, 280, font_conf=font_tuple, distance=0,
+                              v_distance=35, entry_width=155, label_width=150)
+    self.start_date = TextWithLabel(self.win, ':تاریخ شروع', 1100, 280, font_conf=font_tuple, distance=0,
+                                    v_distance=35, entry_width=155, label_width=150)
+    self.end_date = TextWithLabel(self.win, ':تایخ پایان', 900, 280, font_conf=font_tuple, distance=0,
+                                  v_distance=35, entry_width=155, label_width=150)
+    self.start_date.set_variable(datetime.today().date())
+    self.cost = TextWithLabel(self.win, ':هزینه هر ملاقات', 700, 280, font_conf=font_tuple, distance=0,
+                              v_distance=35, entry_width=155, data_type="int", label_width=150)
     self.doctor_id = TextWithLabel(self.win, ':شناسه پزشک', 1100, 360, font_conf=font_tuple, distance=0,
                                    v_distance=35, entry_width=156, label_width=150)
     self._ = TextWithLabel(self.win, ':مشخصات پزشک', 705, 360, font_conf=font_tuple, distance=0,
@@ -87,7 +92,6 @@ def registration(self, button=True):
     b1 = tk.CTkButton(self.win, text="✅", width=5, font=font_tuple, command=partial(check, self))
     b1.place(x=1055, y=396)
 
-    #todo: شناسه دکتر شیفت اضافه شود
     tk.CTkLabel(self.win, text="این شیفت را برای کدام روزهای هفته انتخاب میکنید؟", width=300, anchor='e',
                 font=font_tuple).place(x=105, y=210)
     self.shanbe = tk.CTkCheckBox(master=self.win, text="شنبه", onvalue="on", offvalue="off", font=font_tuple)
@@ -105,5 +109,65 @@ def registration(self, button=True):
     self.jome = tk.CTkCheckBox(master=self.win, text="جمعه", onvalue="on", offvalue="off", font=font_tuple)
     self.jome.place(x=50, y=300)
     if button:
-        tk.CTkButton(self.win, text="ثبت شیفت ها", width=150, font=font_tuple, command=self.add_patient).place(x=505,
-                                                                                                               y=396)
+        tk.CTkButton(self.win, text="ثبت شیفت ها", width=150, font=font_tuple,
+                     command=partial(calculate_shifts, self)).place(x=505,
+                                                                    y=396)
+
+
+def calculate_shifts(self):
+    start_date_str = self.start_date.text
+    start_date_str = start_date_str.replace("/", "-")
+    end_date_str = self.end_date.text
+    end_date_str = end_date_str.replace("/", "-")
+    try:
+        start_date = datetime.strptime(start_date_str, '%Y-%m-%d')
+        end_date = datetime.strptime(end_date_str, '%Y-%m-%d')
+    except:
+        MessageBox.show_error(f"Shift failed because of invalid date error")
+
+    week_days = [self.do.get(), self.se.get(), self.char.get(), self.panj.get(), self.jome.get(), self.shanbe.get(),
+                 self.yek.get]
+    current_date = start_date
+    shifts_list = []
+    while current_date <= end_date:
+        w_status = week_days[current_date.weekday()]
+        if w_status == "on":
+            current = f"{current_date.year}-{current_date.month}-{current_date.day}"
+            status, shift = Controller.add_shift(current_date, f'{current} {self.start_time.text}',
+                                                 f"{current} {self.end_time.text}", self.doctor_id.text,
+                                                 self.name.text, self.duration.text, self.cost.text, self.note.text)
+            if status:
+                shifts_list.append(shift)
+            else:
+                MessageBox.show_error(f"Shift failed because of {shift} error")
+        current_date += timedelta(days=1)
+    if len(shifts_list) > 0:
+        MessageBox.show_checkmark(master=self, message="شیفت های زیر با موفقیت به ثبت رسیدند!")
+        view(self, shifts_list, self.doctor_id.text, self.name.text)
+
+
+def view(self, all_services,doc, service_name, p=1):
+    font_tuple = ("Sahel", 15,)
+    self.clear_sc()
+    value = [['شناسه پزشک', 'سرویس', 'هزینه', 'مدت', 'پایان', 'شروع', 'شناسه شیفت']]
+
+    num = len(all_services)
+    for service in all_services[(p - 1) * 15:15 * p]:
+        status = service._status
+        if status == 1:
+            status = "Available"
+            _ = [doc, service_name, service.cost, service.duration, service.end_time, service.start_time, service.id]
+            value.append(_)
+    if num > 15:
+        num = math.ceil(num / 15)
+    else:
+        num = 1
+    font_tuple = ("Sahel", 15)
+    x = 658 - num * 12
+    for i in range(num):
+        i += 1
+        tk.CTkButton(self.win, text=f"{i}", width=15, font=font_tuple, command=partial(view, self, p=i)).place(x=x,
+                                                                                                               y=740)
+        x += 25
+    table = CTkTable(master=self.win, row=16, column=7, width=160, values=value,font=font_tuple)
+    table.place(x=20, y=200)
