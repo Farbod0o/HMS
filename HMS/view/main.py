@@ -11,6 +11,7 @@ from HMS.view.component.label_text import TextWithLabel
 import HMS.view.management_panel.department.register as department_registration
 import HMS.view.management_panel.department.department_table as department_list
 import HMS.view.management_panel.department.search as department_search
+import HMS.view.management_panel.appointment.register as appointment_registration
 import HMS.view.management_panel.patient.register as patient_registration
 import HMS.view.management_panel.doctor.register as doctor_registration
 import HMS.view.management_panel.shifts.register as shift_registration
@@ -20,6 +21,7 @@ import HMS.view.management_panel.patient.search as patient_search
 import HMS.view.management_panel.doctor.search as doctor_search
 import HMS.view.management_panel.med_serv.register as med_serv_registration
 import HMS.view.management_panel.med_serv.info_table as services_list
+import HMS.view.management_panel.shifts.info_table as shifts_list
 
 
 class Main:
@@ -109,6 +111,8 @@ class Main:
                 new_ = []
                 self.clear_sc()
                 self.admin_view()
+            case "نوبت دهی 📆":
+                new_ = ["ثبت نوبت جدید➕", "لیست بیماران🗂", "ویرایش بیمار✏️", "جزئیات بیمار🔍"]
             case "بیماران🦽":
                 new_ = ["اضافه کردن بیمار➕", "لیست بیماران🗂", "ویرایش بیمار✏️", "جزئیات بیمار🔍"]
             case "پزشکان🩺":
@@ -144,8 +148,12 @@ class Main:
         font_tuple = ("Sahel", 15,)
         self.clear_sc()
         match button:
+            case "ثبت نوبت جدید➕":
+                appointment_registration.registration(self)
             case "اضافه کردن شیفت➕":
                 shift_registration.registration(self)
+            case "لیست شیفت ها🗂":
+                shifts_list.view(self)
             case "اضافه کردن بیمار➕":
                 patient_registration.registration(self)
             case "ویرایش بیمار✏️":
@@ -203,7 +211,6 @@ class Main:
 
             case _:
                 new_ = []
-                print(new_)
 
     def search_department(self):
         status, p_list = Controller.search_by_department(self.name.text, self.department.text)
@@ -228,7 +235,6 @@ class Main:
                                                      self.specialty.text, self.sub_specialty.text, self.department.text,
                                                      self.birthday.text)
 
-        print(status, d_list)
         if len(d_list) == 1:
             doctor_info.DoctorInfo.show(self, d_list[0])
         elif len(d_list) > 1:

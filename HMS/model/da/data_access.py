@@ -56,3 +56,8 @@ class DataAccess:
         _info = (
             self.session.query(self.class_name).join(join_class, join_statement).filter(conditions).all())
         return _info
+
+    def find_by_conditions2(self, conditions):
+        _info = (
+            self.session.query(self.class_name).filter(conditions).all())
+        return _info

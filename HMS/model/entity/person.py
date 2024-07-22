@@ -68,7 +68,7 @@ class Person(Base):
         return self._username
 
     @username.setter
-    @pattern_validator(r"(^\d{10}$|^\d{3}-\d{6}-\d{1}$)", "Invalid Username")
+    #@pattern_validator(r"(^\d{10}$|^\d{3}-\d{6}-\d{1}$)", "Invalid Username")
     def username(self, username):
         self._username = username
 

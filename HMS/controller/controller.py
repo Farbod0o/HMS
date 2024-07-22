@@ -11,6 +11,7 @@ from HMS.model.service.doctor_service import DoctorService
 from HMS.model.service.medical_serv_service import MedicalServService
 from HMS.model.service.patient_service import PatientService
 from HMS.model.service.service import Service
+from HMS.model.service.shift_service import ShiftService
 from HMS.model.tools.decorators import exception_handling
 
 
@@ -28,10 +29,14 @@ class Controller:
     @classmethod
     @exception_handling
     def add_person(cls, name, family, user, password, password2, birth, role, phone, email, address, ):
+
         if password != password2:
             print("Passwords do not match")
             return False, "Passwords do not match"
+        print(user)
         person = Person(name, family, user, password, birth, role, phone, email, address, )
+        print("---:",person)
+
         return True, Service.save(person, Person)
 
     @classmethod
@@ -52,6 +57,7 @@ class Controller:
     @classmethod
     @exception_handling
     def add_patient(cls, name, family, user, password, password2, birth, role, phone, email, address, gender, blood):
+        print(name,"0000")
         status, person = cls.add_person(name, family, user, password, password2, birth, role, phone, email, address)
         patient = Patient(person, gender, blood)
         return True, Service.save(patient, Patient)
@@ -97,6 +103,10 @@ class Controller:
         appointment = Appointment(shift, patient, start_time, end_time)
         return True, AppointmentService.save(shift, appointment)
 
+    @classmethod
+    @exception_handling
+    def search_by_shifts(cls,doc,med,date):
+        return True, ShiftService.query_builder(doc,med,date)
 
     @staticmethod
     @exception_handling
