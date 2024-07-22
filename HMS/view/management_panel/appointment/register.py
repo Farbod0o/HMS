@@ -11,8 +11,8 @@ from HMS.model.service.service import Service
 from HMS.view.component.label_text import TextWithLabel
 import customtkinter as tk
 import tkinter.messagebox as msg
-
 from HMS.view.component.msg_handler import MessageBox
+
 
 
 def edit(self, user_id):
@@ -72,13 +72,21 @@ def check1(self):
 
 
 def check2(self):
+    a = tk.CTkLabel(self.win,
+                    text=f" ",
+                    width=1270, height=500, font=("Sahel", 14), text_color="#D9E9FF",
+                    corner_radius=10).place(x=10, y=350)
     font_tuple = ("Sahel", 15)
     doc_id = self.doctor.text
     try:
         doc_id = int(doc_id.split("(")[-1].replace(")", ""))
+    except:
+        pass
+    try:
         medserv_id = Controller.find_medserv_by_name(self.medserv.text)[0].id
     except:
         medserv_id = ""
+
     status, shifts = Controller.search_by_shifts(doc_id, medserv_id, self.date_.text)
     if len(shifts) < 1:
         MessageBox.show_error("هیچ شیفت فعالی برای شما یافت نشد!!!")
@@ -86,19 +94,26 @@ def check2(self):
     y = 300
     n = 0
     for shift in shifts:
-        y += 90
-        x = 20
-        if shift.status and n < 3:
+        if shift.status and n < 3 and shift._medical_service == medserv_id:
+            x = 20
+            y += 50
+            doc_name = Controller.find_by_id(Doctor, shift.doctor_id)
+            date_ = f"{shift.day}"
+            date_ = date_.replace("00:00:00", "")
+            type_ = Controller.find_by_id(MedicalService,medserv_id)
+            a = tk.CTkLabel(self.win,
+                            text=f"{doc_name.person.name} {doc_name.person.family} ({doc_name._specialty}) - {date_} ({type_._medical_service})",
+                            width=1250, height=20, font=("Sahel", 14), fg_color="#5F8575", text_color="#D9E9FF",
+                            corner_radius=10).place(x=x, y=y)
+            y += 40
             n += 1
             next_app = shift.start_time
             while True:
                 start = next_app.strftime("%H:%M")
-                print(shift.start_time, shift.end_time, shift.duration)
                 next_app = next_app + datetime.timedelta(minutes=shift.duration)
                 next_v = next_app.strftime("%H:%M")
-                print("----", next_app)
                 if next_app <= shift.end_time:
-                    tk.CTkButton(self.win, text=f"{start} - {next_v}", width=5, font=font_tuple,
+                    tk.CTkButton(self.win, text=f"{start} - {next_v}", width=5, fg_color="#4F7942", font=font_tuple,
                                  command=partial(check1, self)).place(x=x, y=y)
                     x += 110
                     if x > 1200:
@@ -108,7 +123,7 @@ def check2(self):
                 else:
                     break
         else:
-            print("no")
+            pass
 
 
 def registration(self, button=True):
