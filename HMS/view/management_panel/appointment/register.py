@@ -1,18 +1,14 @@
 import datetime
 from functools import partial
-
-from HMS.controller import controller
 from HMS.controller.controller import Controller
 from HMS.model.entity.department import Department
 from HMS.model.entity.doctor import Doctor
 from HMS.model.entity.med_serv import MedicalService
-from HMS.model.entity.shift import Shift
 from HMS.model.service.service import Service
 from HMS.view.component.label_text import TextWithLabel
 import customtkinter as tk
 import tkinter.messagebox as msg
 from HMS.view.component.msg_handler import MessageBox
-
 
 
 def edit(self, user_id):
@@ -29,7 +25,7 @@ def edit(self, user_id):
         birth_date = p1.birth_date
         birth_date = f"{birth_date}"
         birth_date = birth_date.replace(" 00:00:00", "")
-        registration(self, button=False)
+        registration(self)
         self.name.set_variable(p1.name)
         self.family.set_variable(p1.family)
         self.user.set_variable(p1.username)
@@ -72,10 +68,8 @@ def check1(self):
 
 
 def check2(self):
-    a = tk.CTkLabel(self.win,
-                    text=f" ",
-                    width=1270, height=500, font=("Sahel", 14), text_color="#D9E9FF",
-                    corner_radius=10).place(x=10, y=350)
+    tk.CTkLabel(self.win, text=f" ", width=1270, height=500, font=("Sahel", 14), text_color="#D9E9FF",
+                corner_radius=10).place(x=10, y=350)
     font_tuple = ("Sahel", 15)
     doc_id = self.doctor.text
     try:
@@ -100,11 +94,11 @@ def check2(self):
             doc_name = Controller.find_by_id(Doctor, shift.doctor_id)
             date_ = f"{shift.day}"
             date_ = date_.replace("00:00:00", "")
-            type_ = Controller.find_by_id(MedicalService,medserv_id)
-            a = tk.CTkLabel(self.win,
-                            text=f"{doc_name.person.name} {doc_name.person.family} ({doc_name._specialty}) - {date_} ({type_._medical_service})",
-                            width=1250, height=20, font=("Sahel", 14), fg_color="#5F8575", text_color="#D9E9FF",
-                            corner_radius=10).place(x=x, y=y)
+            type_ = Controller.find_by_id(MedicalService, medserv_id)
+            tk.CTkLabel(self.win,
+                        text=f"{doc_name.person.name} {doc_name.person.family} ({doc_name._specialty}) - {date_} ({type_._medical_service})",
+                        width=1250, height=20, font=("Sahel", 14), fg_color="#5F8575", text_color="#D9E9FF",
+                        corner_radius=10).place(x=x, y=y)
             y += 40
             n += 1
             next_app = shift.start_time
@@ -126,7 +120,7 @@ def check2(self):
             pass
 
 
-def registration(self, button=True):
+def registration(self):
     font_tuple = ("Sahel", 15)
     text = ":فیلد هایی که قصد جست و جو بر اساس آن ها را دارید پر کرده و باقی را خالی بگذارید"
     tk.CTkLabel(self.win, text=text, width=600, anchor='e', font=font_tuple).place(x=650, y=200)

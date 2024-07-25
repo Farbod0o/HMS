@@ -26,6 +26,8 @@ import HMS.view.management_panel.shifts.info_table as shifts_list
 
 class Main:
     def __init__(self):
+        self.logged_in_family = None
+        self.logged_in_name = None
         self.win = tk.CTk()
         self.switch_var = tk.StringVar(value="on")
         self.right_buttons_list = []
@@ -53,6 +55,9 @@ class Main:
         username = self.login_user.text
         password = self.login_pass.text
         status, self.logged_in = Controller.login_check(username, password)
+        print(self.logged_in)
+        self.logged_in_name = self.logged_in.name
+        self.logged_in_family = self.logged_in.family
         if status:
             self.win.destroy()
             self.win = tk.CTk()
@@ -88,6 +93,11 @@ class Main:
 
         tk.CTkLabel(self.win, text=f"سیستم مدیریت بیمارستان\n پنل {to_per[self.logged_in.role]}", bg_color="#374A69",
                     text_color="#E1F9FF", font=font_tuple, width=w, height=75).place(x=0, y=0)
+
+
+        tk.CTkLabel(self.win, text=f"کاربر: {self.logged_in_name} {self.logged_in_family}👤", bg_color="#374A69",
+                    text_color="#E1F9FF", font= ("Sahel", 13,), width=150,anchor="e", height=5).place(x=w-160, y=10)
+
 
         tk.CTkButton(self.win, text="خروج", font=font_tuple, bg_color="#374A69", command=self.logout).place(x=20,
                                                                                                             y=8)
@@ -267,8 +277,13 @@ class Main:
         if status:
             patients = len(patients)
             patients = f"بیماران🦽\n{patients}"
-
-        _list = [doctors, patients, doctors, patients]
+        if status:
+            shifts = 10
+            shifts = f"شیفت های امروز⏳\n{shifts}"
+        if status:
+            appointment = 20
+            appointment = f"نوبت های امروز📆\n{appointment}"
+        _list = [appointment, shifts, doctors, patients,]
 
         font_tuple = ("B Titr", 20,)
         x = 20
