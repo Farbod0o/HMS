@@ -25,7 +25,7 @@ Search patients by name, hospital number, or other attributes and display their 
 ### 1. Clone the repository and install dependencies:
 
 ```bash
-git clone https://github.com/Farbod0o/HMS
+git clone github.com/Farbod0o/Hospital-Management-System
 cd HMS
 pip install -r requirements.txt
 ```
