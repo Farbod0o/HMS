@@ -18,9 +18,7 @@ def registration(self,button=True):
                      command=self.add_med_serv).place(x=1105, y=290)
 
 def edit(self, user_id):
-    print(user_id)
     p2 = Controller.find_by(MedicalService, MedicalService._id == user_id.text)
-    print(p2)
     if len(p2) > 0:
         p2 = p2[0]
         font_tuple = ("Sahel", 15,)

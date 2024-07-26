@@ -23,7 +23,6 @@ def view(self, p=1):
             status = "Available"
             med = Controller.find_by_id(MedicalService, service._medical_service)
             doc = Controller.find_by_id(Doctor, service._doctor_id)
-            print(med)
             _ = [ service.cost, service.duration, service.end_time, service.start_time,
                  med.medical_service, f'{doc.person._name} {doc.person._family}',service.id]
             value.append(_)

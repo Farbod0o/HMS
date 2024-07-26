@@ -15,9 +15,7 @@ def view(self, p=1):
 
     num = len(all_departments)
     for department in all_departments[(p - 1) * 15:15 * p]:
-        print(department._head_id,department.name)
         doc = Controller.find_by_id(Doctor,department._head_id)
-        print(doc)
         _ = [f"{doc.person._name} {doc.person._family}",department.name,department.id]
         value.append(_)
     if num > 15:

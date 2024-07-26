@@ -26,7 +26,7 @@ natcode = 1311755003
 #                                         "Doctor", phone, "adad@gmail.com", "address",
 #                                         spe, "test", "sub", "exp")
 
-status, shift = Controller.add_shift(day, f"{day} 12:00:00", f"{day} 13:00:00", 1, "تست",30,50000,"ندارد")
+status, shift = Controller.add_shift(day, f"{day} 12:00:00", f"{day} 19:00:00", 2, "تست",30,50000,"ندارد")
 #
 # for i in range(40):
 #     natcode = natcode + i

@@ -7,8 +7,8 @@ from HMS.model.tools.validator import Validator, date_validator, date_time_valid
 class Appointment(Base):
     __tablename__ = "appointments_tbl"
     _id = Column("id", Integer, primary_key=True, autoincrement=True)
-    _start_time = Column("start_time",String(20), nullable=False)
-    _end_time = Column("end_time",String(20), nullable=False)
+    _start_time = Column("start_time", String(20), nullable=False)
+    _end_time = Column("end_time", String(20), nullable=False)
     _status = Column("status", Boolean, default=True)
     _cost = Column("cost", Integer, nullable=False)
     _payment_status = Column("payment_status", String(30), default=True)
@@ -18,7 +18,8 @@ class Appointment(Base):
 
     _patient_id = Column(Integer, ForeignKey("patients_tbl.id"))
     patient = relationship("Patient")
-    def __init__(self, shift, start_time, end_time,patient=None, payment_status="pending"):
+
+    def __init__(self, shift, start_time, end_time, patient=None, payment_status="pending"):
         self.id = None
         self.shift_id = shift.id
         self.start_time = start_time
@@ -45,6 +46,7 @@ class Appointment(Base):
     @shift_id.setter
     def shift_id(self, id):
         self._shift_id = id
+
     @property
     def start_time(self):
         return self._start_time

@@ -55,7 +55,6 @@ class Main:
         username = self.login_user.text
         password = self.login_pass.text
         status, self.logged_in = Controller.login_check(username, password)
-        print(self.logged_in)
         self.logged_in_name = self.logged_in.name
         self.logged_in_family = self.logged_in.family
         if status:

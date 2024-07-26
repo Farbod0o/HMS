@@ -24,6 +24,5 @@ class DepartmentService(Service):
 
     @staticmethod
     def find_by_department(entity,department):
-        print("--",department,entity)
         entity_da = DataAccess(entity)
         return entity_da.find_by(entity._department == department)

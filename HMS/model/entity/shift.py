@@ -57,7 +57,6 @@ class Shift(Base):
     @start_time.setter
     @time_validator("Invalid Start time")
     def start_time(self, start_time):
-        print(start_time)
         self._start_time = start_time
 
     @property

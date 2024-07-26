@@ -16,7 +16,6 @@ class MessageBox:
     @staticmethod
     def show_error(message, error_title="Error"):
         msg = CTkMessagebox(title="Error", message=f"{message}!!!", icon="cancel", font=("Sahel", 12,),justify="center")
-        print(msg.get())
 
     @classmethod
     def show_warning(cls, message, option1="لغو", option2="تلاش مجدد", title="هشدار!"):

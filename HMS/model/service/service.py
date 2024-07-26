@@ -31,7 +31,8 @@ class Service:
     @staticmethod
     def edit(obj,entity):
         entity_da = DataAccess(entity)
-        return entity_da.edit(obj)
+        res = entity_da.edit(obj)
+        return res
 
 
 

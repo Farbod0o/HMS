@@ -33,14 +33,16 @@ class Controller:
     def add_person(cls, name, family, user, password, password2, birth, role, phone, email, address, ):
 
         if password != password2:
-            print("Passwords do not match")
             return False, "Passwords do not match"
-        print(user)
-        person = Person(name, family, user, password, birth, role, phone, email, address, )
-        print("---:",person)
 
+        person = Person(name, family, user, password, birth, role, phone, email, address, )
         return True, Service.save(person, Person)
 
+    @classmethod
+    @exception_handling
+    def edit(cls,entity,obj):
+        res = Service.edit(obj,entity)
+        return True, res
     @classmethod
     @exception_handling
     def add_department(cls, name, head_id):
@@ -59,7 +61,6 @@ class Controller:
     @classmethod
     @exception_handling
     def add_patient(cls, name, family, user, password, password2, birth, role, phone, email, address, gender, blood):
-        print(name,"0000")
         status, person = cls.add_person(name, family, user, password, password2, birth, role, phone, email, address)
         patient = Patient(person, gender, blood)
         return True, Service.save(patient, Patient)
@@ -68,7 +69,6 @@ class Controller:
     @exception_handling
     def add_service(cls, service_name, note):
         med_service = MedicalService(service_name, note)
-        print(med_service)
         return True, Service.save(med_service, MedicalService)
 
     @classmethod
@@ -79,7 +79,6 @@ class Controller:
         shift = Shift(day, start, end, doc, service[0],duration,cost,note)
         next_app = shift.start_time
         shift = Service.save(shift, Shift)
-        print(shift)
         while True:
             start = next_app.strftime("%H:%M")
             next_app = next_app + datetime.timedelta(minutes=shift.duration)
@@ -95,7 +94,6 @@ class Controller:
     @exception_handling
     def add_appointment(cls, shift, start_time, end_time):
         appointment = Appointment(shift, start_time, end_time)
-        print(appointment)
         return True, AppointmentService.save(appointment, Appointment)
 
     @classmethod

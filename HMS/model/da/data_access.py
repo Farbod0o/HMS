@@ -27,7 +27,6 @@ class DataAccess:
             self.session.refresh(entity)
             return entity
         except Exception as e:
-            print("1", e)
             raise ValueError("Error adding {} to database: {}".format(entity, e))
 
     def edit(self, entity):

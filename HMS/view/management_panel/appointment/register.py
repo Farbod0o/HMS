@@ -1,9 +1,12 @@
 import datetime
 from functools import partial
 from HMS.controller.controller import Controller
+from HMS.model.entity.appointment import Appointment
 from HMS.model.entity.department import Department
 from HMS.model.entity.doctor import Doctor
 from HMS.model.entity.med_serv import MedicalService
+from HMS.model.entity.patient import Patient
+from HMS.model.entity.person import Person
 from HMS.model.service.service import Service
 from HMS.view.component.label_text import TextWithLabel
 import customtkinter as tk
@@ -97,29 +100,35 @@ def check2(self):
             type_ = Controller.find_by_id(MedicalService, medserv_id)
             tk.CTkLabel(self.win,
                         text=f"{doc_name.person.name} {doc_name.person.family} ({doc_name._specialty}) - {date_} ({type_._medical_service})",
-                        width=1250, height=20, font=("Sahel", 14), fg_color="#5F8575", text_color="#D9E9FF",
+                        width=1220, height=20, font=("Sahel", 14), fg_color="#217171", text_color="#D9E9FF",
                         corner_radius=10).place(x=x, y=y)
             y += 40
             n += 1
             next_app = shift.start_time
-            while True:
-                start = next_app.strftime("%H:%M")
-                next_app = next_app + datetime.timedelta(minutes=shift.duration)
-                next_v = next_app.strftime("%H:%M")
-                if next_app <= shift.end_time:
-                    tk.CTkButton(self.win, text=f"{start} - {next_v}", width=5, fg_color="#4F7942", font=font_tuple,
-                                 command=partial(check1, self)).place(x=x, y=y)
-                    x += 110
-                    if x > 1200:
-                        x = 20
-                        y += 40
-
+            apps = Controller.find_by(Appointment, Appointment._shift_id == shift.id)
+            for app in apps:
+                if app._patient_id is None:
+                    tk.CTkButton(self.win, text=f"{app.start_time} - {app.end_time}", width=5, fg_color="#4F7942", font=font_tuple,
+                                 command=partial(get_appointment, self,app.id)).place(x=x, y=y)
                 else:
-                    break
+                    tk.CTkButton(self.win, text=f"{app.start_time} - {app.end_time}", width=5, fg_color="#D22B2B",
+                                 hover_color="#D22B2B", font=font_tuple).place(x=x, y=y)
+                x += 110
+                if x > 1200:
+                    x = 20
+                    y += 40
+
         else:
             pass
 
-
+def get_appointment(self,app_id):
+    ap1 = Controller.find_by_id(Appointment, app_id)
+    p1 = Controller.find_by_username(self.name)[0]
+    p1 = Controller.find_by(Patient, Patient._person_id == p1.id)[0]
+    ap1._patient_id = p1.id
+    status ,edited = Controller.edit(Appointment, ap1)
+    if status:
+        MessageBox.show_checkmark(self, "این نوبت رزرو شد!!!", option1="باشه")
 def registration(self):
     font_tuple = ("Sahel", 15)
     text = ":فیلد هایی که قصد جست و جو بر اساس آن ها را دارید پر کرده و باقی را خالی بگذارید"

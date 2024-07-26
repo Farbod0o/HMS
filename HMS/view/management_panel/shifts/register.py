@@ -42,7 +42,6 @@ def edit(self, user_id):
         self.clear_sc()
         birth_date = p1.birth_date
         birth_date = f"{birth_date}"
-        print(birth_date)
         birth_date = birth_date.replace(" 00:00:00", "")
         registration(self, button=False)
         self.name.set_variable(p1.name)
