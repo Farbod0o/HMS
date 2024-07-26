@@ -6,22 +6,22 @@ from HMS.model.service.service import Service
 
 
 class AppointmentService(Service):
-    @classmethod
-    def save(cls, shift, appointment):
-        if appointment.end_time > appointment.start_time:
-            check1 = cls.shift_check(shift, appointment)
-            if check1:
-                check2 = cls.appointment_check(appointment)
-                if not check2:
-                    entity_da = DataAccess(Appointment)
-                    entity_da.save(appointment)
-                    return appointment
-                else:
-                    raise ValueError("Appointment already exists")
-            else:
-                raise ValueError("The appointment must be in a shift")
-        else:
-            raise ValueError("start time must be less than end time")
+    # @classmethod
+    # def save(cls, shift, appointment):
+    #     if appointment.end_time > appointment.start_time:
+    #         check1 = cls.shift_check(shift, appointment)
+    #         if check1:
+    #             check2 = cls.appointment_check(appointment)
+    #             if not check2:
+    #                 entity_da = DataAccess(Appointment)
+    #                 entity_da.save(appointment)
+    #                 return appointment
+    #             else:
+    #                 raise ValueError("Appointment already exists")
+    #         else:
+    #             raise ValueError("The appointment must be in a shift")
+    #     else:
+    #         raise ValueError("start time must be less than end time")
 
     @classmethod
     def shift_check(cls, shift, appointment):

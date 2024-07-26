@@ -26,7 +26,7 @@ natcode = 1311755003
 #                                         "Doctor", phone, "adad@gmail.com", "address",
 #                                         spe, "test", "sub", "exp")
 
-# status, shift = Controller.add_shift(day, f"{day} 12:00:00", f"{day} 22:00:00", 1, "تست",30,50000,"ندارد")
+status, shift = Controller.add_shift(day, f"{day} 12:00:00", f"{day} 13:00:00", 1, "تست",30,50000,"ندارد")
 #
 # for i in range(40):
 #     natcode = natcode + i
@@ -43,14 +43,14 @@ natcode = 1311755003
 #     status, person = Controller.add_patient(name, family, natcode, "123a", "123a",
 #                                             f"{rand.randint(1950,1998)}-04-04", "Patient", phone, "adad@gmail.com",
 #                                             "address ", gender, bt)
-
-shift = Controller.find_by_id(Shift,1)
-person = Controller.find_by_id(Patient,1)
-status, app1 = Controller.add_appointment(shift, person, f"{day} 13:33:00", f"{day} 13:34:00", )
-print(status)
-status, app1 = Controller.add_appointment(shift, person, f"{day} 13:30:00", f"{day} 14:30:00", )
-print(status)
-status, app1 = Controller.add_appointment(shift, person, f"{day} 14:00:00", f"{day} 15:00:00", )
-print(status)
-
+#
+# shift = Controller.find_by_id(Shift,1)
+# person = Controller.find_by_id(Patient,1)
+# status, app1 = Controller.add_appointment(shift, person, f"{day} 13:33:00", f"{day} 13:34:00", )
+# print(status)
+# status, app1 = Controller.add_appointment(shift, person, f"{day} 13:30:00", f"{day} 14:30:00", )
+# print(status)
+# status, app1 = Controller.add_appointment(shift, person, f"{day} 14:00:00", f"{day} 15:00:00", )
+# print(status)
+#
 

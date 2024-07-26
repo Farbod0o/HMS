@@ -7,26 +7,28 @@ from HMS.model.tools.validator import Validator, date_validator, date_time_valid
 class Appointment(Base):
     __tablename__ = "appointments_tbl"
     _id = Column("id", Integer, primary_key=True, autoincrement=True)
-    _start_time = Column("start_time", DateTime, nullable=False)
-    _end_time = Column("end_time", DateTime, nullable=False)
+    _start_time = Column("start_time",String(20), nullable=False)
+    _end_time = Column("end_time",String(20), nullable=False)
     _status = Column("status", Boolean, default=True)
     _cost = Column("cost", Integer, nullable=False)
     _payment_status = Column("payment_status", String(30), default=True)
 
-    _patient_id = Column(Integer, ForeignKey("patients_tbl.id"))
-    patient = relationship("Patient")
-
     _shift_id = Column(Integer, ForeignKey("shifts_tbl.id"))
     shift = relationship("Shift")
 
-    def __init__(self, shift, patient, start_time, end_time, cost=0, payment_status="pending"):
+    _patient_id = Column(Integer, ForeignKey("patients_tbl.id"))
+    patient = relationship("Patient")
+    def __init__(self, shift, start_time, end_time,patient=None, payment_status="pending"):
         self.id = None
         self.shift_id = shift.id
         self.start_time = start_time
         self.end_time = end_time
-        self.patient_id = patient.id
-        self.cost = cost
+        self.patient_id = patient
+        self.cost = shift.cost
         self.payment_status = payment_status
+
+    def __repr__(self):
+        return f"{self.__dict__}"
 
     @property
     def id(self):
@@ -37,11 +39,17 @@ class Appointment(Base):
         self._id = id
 
     @property
+    def shift_id(self):
+        return self._shift_id
+
+    @shift_id.setter
+    def shift_id(self, id):
+        self._shift_id = id
+    @property
     def start_time(self):
         return self._start_time
 
     @start_time.setter
-    @time_validator("Invalid start time")
     def start_time(self, start_time):
         self._start_time = start_time
 
@@ -50,7 +58,6 @@ class Appointment(Base):
         return self._end_time
 
     @end_time.setter
-    @time_validator("Invalid end time")
     def end_time(self, end_time):
         self._end_time = end_time
 

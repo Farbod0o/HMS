@@ -1,3 +1,5 @@
+import datetime
+
 from HMS.model.entity.appointment import Appointment
 from HMS.model.entity.department import Department
 from HMS.model.entity.doctor import Doctor
@@ -75,7 +77,26 @@ class Controller:
         doc = cls.find_by_id(Doctor, doc)
         service = cls.find_medserv_by_name(service)
         shift = Shift(day, start, end, doc, service[0],duration,cost,note)
-        return True, Service.save(shift, Shift)
+        next_app = shift.start_time
+        shift = Service.save(shift, Shift)
+        print(shift)
+        while True:
+            start = next_app.strftime("%H:%M")
+            next_app = next_app + datetime.timedelta(minutes=shift.duration)
+            next_v = next_app.strftime("%H:%M")
+            if next_app <= shift.end_time:
+                cls.add_appointment(shift,start,next_v)
+            else:
+                break
+
+        return True, shift
+
+    @classmethod
+    @exception_handling
+    def add_appointment(cls, shift, start_time, end_time):
+        appointment = Appointment(shift, start_time, end_time)
+        print(appointment)
+        return True, AppointmentService.save(appointment, Appointment)
 
     @classmethod
     @exception_handling
@@ -96,12 +117,6 @@ class Controller:
     @exception_handling
     def find_by(cls, entity, statement):
         return Service.find_by(entity, statement)
-
-    @classmethod
-    @exception_handling
-    def add_appointment(cls, shift, patient, start_time, end_time):
-        appointment = Appointment(shift, patient, start_time, end_time)
-        return True, AppointmentService.save(shift, appointment)
 
     @classmethod
     @exception_handling
