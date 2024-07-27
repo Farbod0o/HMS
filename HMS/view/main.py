@@ -1,5 +1,9 @@
 from functools import partial
 import customtkinter as tk
+import datetime
+
+from HMS.model.entity.appointment import Appointment
+from HMS.model.entity.shift import Shift
 from HMS.view.component.msg_handler import MessageBox
 from HMS.view.management_panel.doctor import doctor_info
 from HMS.view.management_panel.patient import patient_info
@@ -93,10 +97,8 @@ class Main:
         tk.CTkLabel(self.win, text=f"سیستم مدیریت بیمارستان\n پنل {to_per[self.logged_in.role]}", bg_color="#374A69",
                     text_color="#E1F9FF", font=font_tuple, width=w, height=75).place(x=0, y=0)
 
-
         tk.CTkLabel(self.win, text=f"کاربر: {self.logged_in_name} {self.logged_in_family}👤", bg_color="#374A69",
-                    text_color="#E1F9FF", font= ("Sahel", 13,), width=150,anchor="e", height=5).place(x=w-160, y=10)
-
+                    text_color="#E1F9FF", font=("Sahel", 13,), width=150, anchor="e", height=5).place(x=w - 160, y=10)
 
         tk.CTkButton(self.win, text="خروج", font=font_tuple, bg_color="#374A69", command=self.logout).place(x=20,
                                                                                                             y=8)
@@ -121,7 +123,7 @@ class Main:
                 self.clear_sc()
                 self.admin_view()
             case "نوبت دهی 📆":
-                new_ = ["ثبت نوبت جدید➕", "لیست بیماران🗂", "ویرایش بیمار✏️", "جزئیات بیمار🔍"]
+                new_ = ["ثبت نوبت جدید➕", "ویرایش نوبت✏️", "جزئیات نوبت🔍"]
             case "بیماران🦽":
                 new_ = ["اضافه کردن بیمار➕", "لیست بیماران🗂", "ویرایش بیمار✏️", "جزئیات بیمار🔍"]
             case "پزشکان🩺":
@@ -277,12 +279,20 @@ class Main:
             patients = len(patients)
             patients = f"بیماران🦽\n{patients}"
         if status:
-            shifts = 10
-            shifts = f"شیفت های امروز⏳\n{shifts}"
+            today = datetime.date.today()
+            today = f'{today} 00:00:00'
+            shifts_list = Controller.find_by(Shift, Shift._day == today)
+            shifts = f"شیفت های امروز⏳\n{len(shifts_list)}"
         if status:
-            appointment = 20
-            appointment = f"نوبت های امروز📆\n{appointment}"
-        _list = [appointment, shifts, doctors, patients,]
+            num = 0
+
+            for shift in shifts_list:
+                app = Controller.find_by(Appointment,Appointment._shift_id == shift._id)
+                for a in app:
+                    if a._patient_id is None:
+                        num += 1
+            appointment = f"نوبت های امروز📆\n{num}"
+        _list = [appointment, shifts, doctors, patients, ]
 
         font_tuple = ("B Titr", 20,)
         x = 20
